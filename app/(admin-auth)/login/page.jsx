@@ -61,9 +61,6 @@ const LoginPage = () => {
                 password: password,
             })
             .then((res) => {
-
-                console.log(res.data);
-
                 setLoading(false);
                 // SAVE TOKEN IN LOCAL STORAGE AND COOKIES AND THE ROLE OF THE USER
                 localStorage.setItem("token", res.data.token);

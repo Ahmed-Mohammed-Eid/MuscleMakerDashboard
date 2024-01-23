@@ -103,6 +103,7 @@ export default function EditBoxContent({boxData, id}) {
                 mealsNumber: boxData?.mealsNumber || 0,
                 snacksNumber: boxData?.snacksNumber || 0,
                 packagePrice: boxData?.boxPrice || 0,
+                foodicsId: boxData?.foodicsId || '',
             })
         }
     }, [boxData])

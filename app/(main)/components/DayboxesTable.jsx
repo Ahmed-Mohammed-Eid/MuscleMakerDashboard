@@ -31,7 +31,6 @@ export default function DayboxesTable() {
             }
         })
             .then(response => {
-                console.log(response.data);
                 setBoxes(response.data?.boxes || []);
             })
             .catch(error => {
