@@ -98,7 +98,7 @@ export default function UsersTable() {
                 }
             })
             .catch(error => {
-                toast.error(error?.response?.data?.data.message || "An error occurred while getting the users.");
+                toast.error(error?.response?.data?.data?.message || "An error occurred while getting the users.");
             })
     }
 

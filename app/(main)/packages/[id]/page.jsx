@@ -31,7 +31,6 @@ const getPackage = async (id) => {
 export default async function EditPackage({params}) {
     // GET THE PACKAGE
     const packageData = await getPackage(params.id);
-    console.log(packageData);
 
     return (
         <EditPackageContent bundle={packageData} id={params.id}/>

@@ -107,7 +107,7 @@ export default function PackagesTable() {
                     body={(rowData) => {
                         return (
                             <Image
-                                src={rowData.bundleImageMale}
+                                src={rowData.bundleImageMale || '/img-not_found.jpg'}
                                 alt={rowData.bundleName}
                                 width={50}
                                 height={50}

@@ -35,7 +35,7 @@ export default function MealsTable() {
         // GET THE TOKEN FROM THE LOCAL STORAGE
         const token = localStorage.getItem("token");
 
-        axios.get(`${process.env.API_URL}/client/meals`, {
+        axios.get(`${process.env.API_URL}/get/meals`, {
             headers: {
                 Authorization: `Bearer ${token}`
             },
