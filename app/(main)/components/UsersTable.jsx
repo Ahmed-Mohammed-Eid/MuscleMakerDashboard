@@ -23,12 +23,14 @@ export default function UsersTable() {
     const [page, setPage] = React.useState(1);
     const [users, setUsers] = React.useState([]);
     const [visible, setVisible] = React.useState(false);
-    const [userIdToDelete, setMealIdToDelete] = React.useState(null);
+    const [clientIdToDelete, setClientIdToDelete] = React.useState(null);
+    const [employeeIdToDelete, setEmployeeIdToDelete] = React.useState(null);
     // LOAD MORE STATES
     const [loadDataOption, setLoadDataOption] = useState("saveOldData");
     const [hasNextPage, setHasNextPage] = useState(false);
     // STATE
     const [activeTab, setActiveTab] = useState("clients");
+    const [clientData, setClientData] = useState(null);
 
 
     // GET THE EMPLOYEES FROM THE API
@@ -112,43 +114,163 @@ export default function UsersTable() {
     }, [activeTab, page]);
 
     // DELETE THE PACKAGE HANDLER
-    const deleteHandler = async () => {
+    const deleteClientHandler = async () => {
         //GET THE TOKEN
         const token = localStorage.getItem("token");
 
-        await axios.delete(`${process.env.API_URL}/delete/bundle`, {
+        await axios.delete(`${process.env.API_URL}/admin/remove/client`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             },
             params: {
-                bundleId: userIdToDelete,
+                clientId: clientIdToDelete,
             }
         })
             .then(_ => {
                 // Show notification
-                toast.success('Meal Deleted Successfully');
+                toast.success('Client deleted successfully.');
                 // Hide the dialog
-                setVisible(false);
+                setClientIdToDelete(null);
                 // Update the State
                 getClients();
             })
             .catch(err => {
-                toast.error(err.response?.data?.message || res.message);
+                toast.error(err.response?.data?.message || `An error occurred while deleting the client.`);
             })
     }
 
-    const footerContent = (
+    // DELETE THE EMPLOYEE HANDLER
+    const deleteEmployeeHandler = async (event) => {
+        //GET THE TOKEN
+        const token = localStorage.getItem("token");
+
+        await axios.delete(`${process.env.API_URL}/delete/user`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            params: {
+                userId: employeeIdToDelete,
+            }
+        })
+            .then(_ => {
+                // Show notification
+                toast.success('Employee deleted successfully.');
+                // Hide the dialog
+                setEmployeeIdToDelete(false);
+                // Update the State
+                getEmployees();
+            })
+            .catch(err => {
+                toast.error(err.response?.data?.message || `An error occurred while deleting the employee.`);
+            })
+    }
+
+    // ACTIVATE AND DEACTIVATE THE EMPLOYEE
+    const activateOrDeactivateEmployee = async (userId, status) => {
+        const url = `${process.env.API_URL}/set/user/active`; // PUT REQUEST
+
+        // GET THE TOKEN FROM THE LOCAL STORAGE
+        const token = localStorage.getItem("token");
+
+        // SET THE DATA
+        const data = {
+            userId: userId,
+            isActive: status
+        };
+
+        // SEND THE REQUEST
+        await axios.put(url, data, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then(res => {
+                console.log(res);
+                // SHOW THE NOTIFICATION
+                toast.success(res.data.message);
+                // GET THE EMPLOYEES
+                getEmployees();
+            })
+            .catch(err => {
+                console.log(err);
+                toast.error(err?.response?.data?.message || "An error occurred while updating the employee status.");
+            })
+    }
+
+    // FREEZE OR UNFREEZE THE CLIENT
+    // const freezeOrUnfreezeClient = async (clientId, status) => {
+    //     const freezeUrl = `${process.env.API_URL}/client/pause`; // POST REQUEST
+    //     const unfreezeUrl = `${process.env.API_URL}/activate/client`; // PUT REQUEST
+    //
+    //     // GET THE TOKEN FROM THE LOCAL STORAGE
+    //     const token = localStorage.getItem("token");
+    //
+    //     // SET THE URL
+    //     const url = status === "paused" ? unfreezeUrl : freezeUrl;
+    //
+    //     // SET THE METHOD
+    //     const method = status === "paused" ? "put" : "post";
+    //
+    //     // SET THE DATA
+    //     const data = {
+    //         clientId: clientId
+    //     };
+    //
+    //     // SEND THE REQUEST
+    //     await axios[method](url, data, {
+    //         headers: {
+    //             Authorization: `Bearer ${token}`
+    //         }
+    //     })
+    //         .then(res => {
+    //             console.log(res);
+    //             // SHOW THE NOTIFICATION
+    //             toast.success(res.data.message);
+    //             // GET THE CLIENTS
+    //             getClients();
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //             toast.error(err?.response?.data?.message || "An error occurred while updating the client status.");
+    //         })
+    // }
+    //
+
+    // DELETE CLIENT DIALOG FOOTER
+    const clientFooterContent = (
         <div>
             <Button
                 label="No"
                 icon="pi pi-times"
-                onClick={() => setVisible(false)}
+                onClick={() => setClientIdToDelete(null)}
                 className="p-button-text"/>
             <Button
                 label="Yes"
                 icon="pi pi-check"
                 onClick={() => {
-                    deleteHandler();
+                    deleteClientHandler();
+                }}
+                style={{
+                    backgroundColor: "#dc3545",
+                    color: "#fff"
+                }}
+                autoFocus/>
+        </div>
+    );
+
+    // DELETE EMPLOYEE DIALOG FOOTER
+    const employeeFooterContent = (
+        <div>
+            <Button
+                label="No"
+                icon="pi pi-times"
+                onClick={() => setEmployeeIdToDelete(false)}
+                className="p-button-text"/>
+            <Button
+                label="Yes"
+                icon="pi pi-check"
+                onClick={() => {
+                    deleteEmployeeHandler();
                 }}
                 style={{
                     backgroundColor: "#dc3545",
@@ -323,7 +445,9 @@ export default function UsersTable() {
 
                                     <button
                                         className={rowData.isActive ? "deactivateButton" : "activateButton"}
-                                        onClick={() => {}}
+                                        onClick={() => {
+                                            activateOrDeactivateEmployee(rowData._id, !rowData.isActive)
+                                        }}
                                     >
                                         {rowData.isActive ? "Deactivate" : "Activate"}
                                     </button>
@@ -331,8 +455,7 @@ export default function UsersTable() {
                                     <button
                                         className="deleteButton"
                                         onClick={() => {
-                                            setVisible(true);
-                                            setMealIdToDelete(rowData._id);
+                                            setEmployeeIdToDelete(rowData._id);
                                         }}
                                     >
                                         Delete
@@ -402,24 +525,26 @@ export default function UsersTable() {
                                     <button
                                         className="viewButton"
                                         onClick={() => {
-
+                                            setClientData(rowData);
                                         }}
                                     >
                                         View
                                     </button>
 
-                                    <button
-                                        className={rowData.clientStatus?.paused ? 'unfreezeButton' : 'freezeButton'}
-                                        onClick={() => {}}
-                                        >
-                                        {rowData.clientStatus?.paused ? 'Unfreeze' : 'Freeze'}
-                                    </button>
+                                    {/*<button*/}
+                                    {/*    className={rowData.clientStatus?.paused ? 'unfreezeButton' : 'freezeButton'}*/}
+                                    {/*    onClick={() => {*/}
+                                    {/*        freezeOrUnfreezeClient(rowData._id, rowData.clientStatus?.paused ? "unpaused" : "paused")*/}
+                                    {/*    }}*/}
+                                    {/*>*/}
+                                    {/*    {rowData.clientStatus?.paused ? 'Unfreeze' : 'Freeze'}*/}
+                                    {/*</button>*/}
 
                                     <button
                                         className="deleteButton"
                                         onClick={() => {
                                             setVisible(true);
-                                            setMealIdToDelete(rowData._id);
+                                            setClientIdToDelete(rowData._id);
                                         }}
                                     >
                                         Delete
@@ -430,18 +555,134 @@ export default function UsersTable() {
                     />
                 </DataTable>)}
 
+            {/*  DELETE CLIENT DIALOG  */}
             <Dialog
-                header="Delete Employee"
-                visible={visible}
+                header="Delete Client"
+                visible={clientIdToDelete !== null}
                 position={"top"}
                 style={{width: '90%', maxWidth: '650px'}}
-                onHide={() => setVisible(false)}
-                footer={footerContent}
+                onHide={() => setClientIdToDelete(null)}
+                footer={clientFooterContent}
+                draggable={false}
+                resizable={false}>
+                <p className="m-0">
+                    Are you sure you want to delete this Client?
+                </p>
+            </Dialog>
+            
+            {/* DELETE EMPLOYEE DIALOG */}
+            <Dialog
+                header="Delete Employee"
+                visible={employeeIdToDelete}
+                position={"top"}
+                style={{width: '90%', maxWidth: '650px'}}
+                onHide={() => setEmployeeIdToDelete(false)}
+                footer={employeeFooterContent}
                 draggable={false}
                 resizable={false}>
                 <p className="m-0">
                     Are you sure you want to delete this Employee?
                 </p>
+            </Dialog>
+
+            {/*  SHOW THE CLIENT DATA  */}
+            <Dialog
+                header="Client Data"
+                visible={clientData !== null}
+                position={"center"}
+                style={{width: '90%', maxWidth: '650px'}}
+                onHide={() => setClientData(null)}
+                draggable={false}
+                resizable={false}
+            >
+                <div className="card">
+                    <div className="grid">
+                        <div className="col-12 md:col-6">
+                            <h5>Client Name</h5>
+                            <p>{clientData?.clientName}</p>
+                        </div>
+                        <div className="col-12 md:col-6">
+                            <h5>Client Phone</h5>
+                            <p>{clientData?.phoneNumber}</p>
+                        </div>
+                        <div className="col-12 md:col-6">
+                            <h5>Client Email</h5>
+                            <p>{clientData?.email}</p>
+                        </div>
+                        <div className="col-12 md:col-6">
+                            <h5>Gender</h5>
+                            <p>{clientData?.gender}</p>
+                        </div>
+                        <div className="col-12 md:col-6">
+                            <h5>Governorate</h5>
+                            <p>{clientData?.governorate}</p>
+                        </div>
+                        <div className="col-12 md:col-6">
+                            <h5>Region</h5>
+                            <p>{clientData?.region}</p>
+                        </div>
+                        <div className="col-12 md:col-6">
+                            <h5>Block</h5>
+                            <p>{clientData?.block}</p>
+                        </div>
+                        <div className="col-12 md:col-6">
+                            <h5>Street</h5>
+                            <p>{clientData?.street}</p>
+                        </div>
+                        <div className="col-12 md:col-6">
+                            <h5>Alley</h5>
+                            <p>{clientData?.alley}</p>
+                        </div>
+                        <div className="col-12 md:col-6">
+                            <h5>Building</h5>
+                            <p>{clientData?.building}</p>
+                        </div>
+                        <div className="col-12 md:col-6">
+                            <h5>Floor</h5>
+                            <p>{clientData?.floor}</p>
+                        </div>
+                        <div className="col-12 md:col-6">
+                            <h5>Apartment</h5>
+                            <p>{clientData?.appartment}</p>
+                        </div>
+                        <div className="col-12 md:col-6">
+                            <h5>Client Status</h5>
+                            <p>{clientData?.clientStatus?.paused ? 'Paused' : 'Active'}</p>
+                        </div>
+                        <div className="col-12 md:col-6">
+                            <h5>Client Subscription</h5>
+                            <p>{clientData?.subscriped ? 'Subscribed' : 'Not Subscribed'}</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="card">
+                    <div className="grid">
+                        <div className="col-12 md:col-6">
+                            <h5>Bundle Id</h5>
+                            <p>{clientData?.subscripedBundle?.bundleId}</p>
+                        </div>
+                        <div className="col-12 md:col-6">
+                            <h5>Starting Date</h5>
+                            <p>{new Date(clientData?.subscripedBundle?.startingDate).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            })}</p>
+                        </div>
+                        <div className="col-12 md:col-6">
+                            <h5>Ending Date</h5>
+                            <p>{new Date(clientData?.subscripedBundle?.endingDate).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            })}</p>
+                        </div>
+                        <div className="col-12 md:col-6">
+                            <h5>Bundle Period</h5>
+                            <p>{clientData?.subscripedBundle?.bundlePeriod}</p>
+                        </div>
+                    </div>
+                </div>
             </Dialog>
         </>
     )

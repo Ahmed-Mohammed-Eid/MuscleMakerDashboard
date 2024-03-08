@@ -98,6 +98,22 @@ const AppMenu = () => {
             ]
         },
         {
+            label: "UI Management",
+            icon: "pi pi-fw pi-cog",
+            items: [
+                {
+                    label: "Sliders",
+                    icon: "pi pi-fw pi-cog",
+                    to: "/ui/sliders",
+                },
+                {
+                    label : 'Add Slider',
+                    icon : 'pi pi-fw pi-plus',
+                    to : '/ui/sliders/add'
+                }
+            ]
+        },
+        {
             label: "Reports",
             icon: "pi pi-fw pi-chart-bar",
             items: [
@@ -105,6 +121,11 @@ const AppMenu = () => {
                     label: "Reports List",
                     icon: "pi pi-fw pi-list",
                     to: "/reports",
+                },
+                {
+                    label: 'Daily Meals Report',
+                    icon: 'pi pi-fw pi-list',
+                    to: '/meals-report',
                 }
             ]
         },

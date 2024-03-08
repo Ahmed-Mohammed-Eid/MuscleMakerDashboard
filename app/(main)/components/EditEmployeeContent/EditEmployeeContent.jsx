@@ -48,7 +48,7 @@ export default function EditEmployeeContent({employee, id}) {
         const token = localStorage.getItem("token");
 
         // VALIDATE THE FORM
-        if (!form.employeeName || !form.employeeRole || !form.employeeAddress || !form.employeeMobile || !form.employeeUsername || !form.employeePassword) {
+        if (!form.employeeName || !form.employeeRole || !form.employeeAddress || !form.employeeMobile || !form.employeeUsername) {
             toast.error("Please fill all the fields.");
             return;
         }
@@ -70,9 +70,10 @@ export default function EditEmployeeContent({employee, id}) {
         formData.append("password", form.employeePassword);
         formData.append("address", form.employeeAddress);
         formData.append("phoneNumber", form.employeeMobile);
+        formData.append("userId", id);
 
         // SEND THE REQUEST
-        axios.post(`${process.env.API_URL}/edit/employee`, formData, {
+        axios.put(`${process.env.API_URL}/edit/user`, formData, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

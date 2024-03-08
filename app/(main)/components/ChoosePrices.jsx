@@ -38,7 +38,9 @@ export default function ChoosePrices({getPrices, selectedPrices}) {
                                         {label: '1 week', value: '1 week'},
                                         {label: '2 weeks', value: '2 weeks'},
                                         {label: '3 weeks', value: '3 weeks'},
-                                        {label: '1 month', value: '1 month'},
+                                        {label: '1 month (24)', value: '1 month (24)'},
+                                        {label: '1 months (26)', value: '2 months (26)'},
+
                                     ]}
                                     onChange={(e) => {
                                         const ArrayOfPrices = [...prices.pricesArray]
