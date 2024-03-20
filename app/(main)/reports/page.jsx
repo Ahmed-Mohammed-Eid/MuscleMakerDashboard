@@ -23,11 +23,11 @@ export default function Reports() {
         // SET THE LOADING STATE TO TRUE
         setLoading(true);
         // MAKE THE API CALL
-        axios.get(`${process.env.API_URL}/reports`, {
+        axios.get(`${process.env.API_URL}/report`, {
             params: {
-                reportType: reportType,
-                startDate: startDate,
-                endDate: endDate,
+                reportName: reportType,
+                dateFrom: startDate,
+                dateTo: endDate,
             },
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -66,7 +66,7 @@ export default function Reports() {
                             }}
                             placeholder="Report Type"
                             options={[
-                                {label: "Transactions", value: "transactions"},
+                                {label: "Kitchen Meals", value: "kitchenMeals"},
                             ]}
                         />
                     </div>

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     openGraph: {
         type: 'website',
         title: 'Muscle Maker | Dashboard',
-        url: 'https://sakai.primereact.org/',
+        url: 'https://musclemakergrill.com',
         description: 'Muscle Maker Dashboard',
         images: ['/logo.png'],
         ttl: 604800

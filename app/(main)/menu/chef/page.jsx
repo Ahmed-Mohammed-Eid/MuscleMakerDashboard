@@ -6,17 +6,24 @@ import {toast} from "react-hot-toast";
 import axios from "axios";
 import Image from "next/image";
 import {Button} from "primereact/button";
-import {Calendar} from "primereact/calendar";
+import {Dropdown} from "primereact/dropdown";
+import {useRouter} from "next/navigation";
 
-export default function DailyPage() {
+export default function ChefPage() {
+
+    // ROUTER
+    const router = useRouter();
+
+
     // STATES
     const [menu, setMenu] = useState([]);
     const [selectedMenu, setSelectedMenu] = useState([]);
     const [selectedMenuIds, setSelectedMenuIds] = useState([]);
+    const [selectedDay, setSelectedDay] = useState(new Date());
 
-    // EFFECT TO GEY MENU
 
-    useEffect(() => {
+    // FUNCTION TO GET THE MEALS
+    const getMeals = async () => {
         // GET TOKEN FROM LOCAL STORAGE
         const token = localStorage.getItem('token');
 
@@ -24,47 +31,108 @@ export default function DailyPage() {
         let url = `${process.env.API_URL}/meals/filter`;
 
         try {
-            axios.get(url, {
+            const res = await axios.get(url, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
                 params: {
+                    menuType: 'subscriptions',
                     mealsFilter: 'all',
                 }
-            })
-                .then(res => {
-                    setMenu(res.data.meals);
-                })
+            });
+
+            setMenu(res.data.meals);
         } catch (err) {
             toast.error(err.response?.data?.message || err.message)
         }
+    }
+
+    // EFFECT TO GEY MENU
+    useEffect(() => {
+        // GET THE DATE AND FORMAT IT TO RETURN THE DAY FIRST 3 LETTERS
+        const day = selectedDay.toString().split(' ')[0];
+        setSelectedDay(day)
+
+        // GET THE MEALS
+        getMeals();
     }, []);
+
+    // SUBMIT HANDLER
+    const handleSubmit = async () => {
+        // GET TOKEN FROM LOCAL STORAGE
+        const token = localStorage.getItem('token');
+
+        // SET DYNAMIC URL BASED ON THE ROLE
+        let url = `${process.env.API_URL}/add/chiff/menu/day`;
+
+        try {
+            const res = await axios.post(url, {
+                mealsIds: selectedMenuIds,
+                day: selectedDay,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            // SHOW SUCCESS MESSAGE
+            toast.success(res.data?.message || 'Menu Day Added Successfully');
+
+            // RESET THE SELECTED MENU
+            setSelectedMenu([]);
+            setSelectedMenuIds([]);
+
+        } catch (err) {
+            toast.error(err.response?.data?.message || err.message)
+        }
+    }
 
     return (
         <>
             <form className={"card flex gap-2 justify-content-end flex-wrap mb-2"}
                   onSubmit={(e) => e.preventDefault()}>
-                <Button type={"submit"} label={'Delete'} severity="danger"/>
-                <Calendar placeholder={'Choose Day'} onChange={(e) => {
-                }}/>
-                <Button label={'Selected Days List'} className={"p-button-success ml-auto"}/>
+                <Button
+                    label={'Selected Days List'}
+                    severity={'help'}
+                    className={"mr-auto"}
+                    onClick={() => router.push('/menu/chef/selected')}
+                />
+                <Button onClick={handleSubmit} label={'Add Menu Day'} className={"p-button-success"}/>
+                <Dropdown
+                    value={selectedDay}
+                    style={{width: '100%', maxWidth: '200px'}}
+                    options={[
+                        {label: 'Saturday', value: 'Sat'},
+                        {label: 'Sunday', value: 'Sun'},
+                        {label: 'Monday', value: 'Mon'},
+                        {label: 'Tuesday', value: 'Tue'},
+                        {label: 'Wednesday', value: 'Wed'},
+                        {label: 'Thursday', value: 'Thu'},
+                        {label: 'Friday', value: 'Fri'},
+                    ]}
+                    onChange={(e) => {
+                        setSelectedDay(e.value);
+                    }}
+                    placeholder="Select a Day"
+                />
             </form>
             <div className={'card mb-0'}>
-                <h1 className={"mb-2 uppercase"}>Daily Menu</h1>
+                <h1 className={"mb-2 uppercase"}>Chef Menu</h1>
                 <DataTable
                     value={menu || []}
                     selectionMode="checkbox"
                     selection={selectedMenu}
                     onSelectionChange={(e) => {
+                        // SET THE SELECTED MENU
                         setSelectedMenu(e.value);
                         // SET THE SELECTED MENU IDS
-                        setSelectedMenuIds(e.value.map((menu) => menu.id));
+                        setSelectedMenuIds(e.value.map((menu) => menu._id));
                     }}
-                    dataKey="id"
+                    dataKey="_id"
                     paginator
                     rows={10}
                 >
-                    <Column selectionMode="multiple" headerStyle={{width: '3rem'}}></Column>
+                    <Column selectionMode="multiple" headerStyle={{width: '3rem'}} exportable={false}></Column>
                     <Column
                         field="imagePath"
                         header="Image"

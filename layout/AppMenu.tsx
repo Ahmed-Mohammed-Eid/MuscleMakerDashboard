@@ -48,14 +48,14 @@ const AppMenu = () => {
             icon: "pi pi-fw pi-cog",
             items: [
                 {
-                    label: "Daily Menu",
-                    icon: "pi pi-fw pi-calendar",
-                    to: "/menu/daily",
-                },
-                {
                     label: "Default Menu",
                     icon: "pi pi-fw pi-calendar",
                     to: "/menu/default",
+                },
+                {
+                    label: "Chef Menu",
+                    icon: "pi pi-fw pi-calendar",
+                    to: "/menu/chef",
                 }
             ]
         },
