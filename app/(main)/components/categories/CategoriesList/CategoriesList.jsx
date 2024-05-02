@@ -91,7 +91,7 @@ export default function CategoriesList() {
                     <Column
                         body={(rowData) => {
                             return (
-                                <Image src={rowData?.image || '/assets/404.jpg'} alt={'Category Image'} width={50} height={50} style={{ width: '50px', height: '50px', borderRadius: '50%', border: '1px solid #ccc' }} />
+                                <Image src={rowData?.categoryImage || '/assets/404.jpg'} alt={'Category Image'} width={50} height={50} style={{ width: '50px', height: '50px', borderRadius: '50%', border: '1px solid #ccc' }} />
                             );
                         }}
                         header={'Image'}
