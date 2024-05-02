@@ -24,13 +24,13 @@ export default function MealVariations({getVariation = () => {}, selectedVariati
 
     return (
         <div className={"card mb-2"}>
-            <h1 className={"text-2xl font-bold mb-4 uppercase"}>Meal Variations</h1>
+            <h1 className={"text-2xl font-bold mb-4 uppercase"}>Meal Nutrition</h1>
             <div className="grid formgrid p-fluid">
                 {new Array(variation.number).fill(0).map((_, index) => {
                     return (
                         <div key={`MealVariation_${index}`} className={'field col-12 grid formgrid p-fluid'}>
                             <div className="field col-12">
-                                <label htmlFor={`variationNameAr${index}`}>Variation</label>
+                                <label htmlFor={`variationNameAr${index}`}>Nutrition</label>
                                 <Dropdown
                                     id={`variationNameAr${index}`}
                                     value={variation.variationsArray[index]?.title}
@@ -59,7 +59,7 @@ export default function MealVariations({getVariation = () => {}, selectedVariati
                                         })
                                     }}
                                     optionLabel="name"
-                                    placeholder="Select Variation"
+                                    placeholder="Select Nutrition"
                                 />
                             </div>
                             <div className="field col-12 md:col-4">

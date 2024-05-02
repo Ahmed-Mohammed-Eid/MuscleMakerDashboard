@@ -161,6 +161,27 @@
     transform: scale(0.95);
 }
 
+
+.cancelButton{
+    background-color: #efefef;
+    color: #101010;
+    border-radius: 5px;
+    padding: 5px 10px;
+    transition: all 0.15s ease-in-out;
+    cursor: pointer;
+    border: 0;
+}
+
+.cancelButton:hover{
+    background-color: #dfdfdf;
+    color: #fff;
+}
+
+.cancelButton:active{
+    transform: scale(0.95);
+}
+
+
 /*RESET THE SIZE OF THE CUSTOM FILE UPLOAD*/
 .p-fluid .p-fileupload .p-button {
     width: 3rem !important;

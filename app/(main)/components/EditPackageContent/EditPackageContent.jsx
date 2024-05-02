@@ -20,10 +20,12 @@ export default function EditPackage({bundle, id}) {
     const [loading, setLoading] = useState(false);
 
     // STATE
+    const [categories, setCategories] = useState([]);
     const [maleImage, setMaleImage] = useState([])
     const [femaleImage, setFemaleImage] = useState([])
     const [prices, setPrices] = useState([])
     const [form, setForm] = useState({
+        categoryId: "",
         bundleId: "",
         arName: "",
         enName: "",
@@ -47,6 +49,7 @@ export default function EditPackage({bundle, id}) {
     useEffect(() => {
         if (memoizedBundle) {
             setForm({
+                categoryId: memoizedBundle.categoryId,
                 bundleId: id,
                 arName: memoizedBundle.bundleName,
                 enName: memoizedBundle.bundleNameEn,
@@ -91,6 +94,7 @@ export default function EditPackage({bundle, id}) {
         setLoading(true);
 
         // APPEND THE IMAGES
+        formData.append("categoryId", form.categoryId);
         formData.append("bundleId", form.bundleId);
         formData.append("files", maleImage[0]);
         formData.append("files", femaleImage[0]);
@@ -124,6 +128,34 @@ export default function EditPackage({bundle, id}) {
                 setLoading(false);
             })
     }
+
+    // EFFECT TO FETCH DATA
+    useEffect(() => {
+        // GET CATEGORIES LIST
+        getCategoriesList();
+    }, []);
+
+    // GET CATEGORIES LIST HANDLER
+    const getCategoriesList = () => {
+        // GET THE TOKEN FROM LOCAL STORAGE
+        const token = localStorage.getItem('token');
+
+        // API CALL /categories
+        axios
+            .get(`${process.env.API_URL}/category/list`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then((res) => {
+                setCategories(res.data?.categories || []);
+            })
+            .catch((err) => {
+                console.log(err);
+                toast.error('Failed to fetch categories');
+            });
+    };
+
 
 
     return (
@@ -165,6 +197,29 @@ export default function EditPackage({bundle, id}) {
                             }}
                         />
                     </div>
+
+                    {/* CATEGORIES LIST */}
+                    <div className="field col-12">
+                        <label htmlFor="category">Category</label>
+                        <Dropdown
+                            id="category"
+                            optionLabel="name"
+                            optionValue="id"
+                            value={form.categoryId}
+                            options={
+                                categories.map((category) => {
+                                    return {
+                                        id: category._id,
+                                        name: `${category.categoryNameAR} - ${category.categoryNameEN}`
+                                    }
+                                })
+                            }
+                            onChange={(e) => setForm({...form, categoryId: e.value})}
+                            placeholder={"Select a Category"}
+
+                        />
+                    </div>
+
                     <div className="field col-12 md:col-6">
                         <label htmlFor="arName">Package Arabic Name</label>
                         <InputText
@@ -215,22 +270,42 @@ export default function EditPackage({bundle, id}) {
                     </div>
                     <div className="field col-12 md:col-6">
                         <label htmlFor="arText">Arabic Text on Card</label>
-                        <InputText
+                        <Dropdown
                             id="arText"
-                            type="text"
-                            placeholder={"Enter Arabic Text on Card"}
+                            optionLabel="name"
+                            optionValue="value"
                             value={form.arText}
-                            onChange={(e) => setForm({...form, arText: e.target.value})}
+                            options={[
+                                // 80 - 100 - 120 - 150 - 180 - 200
+                                {name: '٨٠ بروتين ٨٠ كارب', value: '٨٠ بروتين ٨٠ كارب'},
+                                {name: '١٠٠ بروتين ١٠٠ كارب', value: '١٠٠ بروتين ١٠٠ كارب'},
+                                {name: '١٢٠ بروتين ١٢٠ كارب', value: '١٢٠ بروتين ١٢٠ كارب'},
+                                {name: '١٥٠ بروتين ١٥٠ كارب', value: '١٥٠ بروتين ١٥٠ كارب'},
+                                {name: '١٨٠ بروتين ١٨٠ كارب', value: '١٨٠ بروتين ١٨٠ كارب'},
+                                {name: '٢٠٠ بروتين ٢٠٠ كارب', value: '٢٠٠ بروتين ٢٠٠ كارب'},
+                            ]}
+                            onChange={(e) => setForm({...form, arText: e.value})}
+                            placeholder={"Select Arabic Text on Card"}
                         />
                     </div>
                     <div className="field col-12 md:col-6">
                         <label htmlFor="enText">English Text on Card</label>
-                        <InputText
+                        <Dropdown
                             id="enText"
-                            type="text"
-                            placeholder={"Enter English Text on Card"}
+                            optionLabel="name"
+                            optionValue="value"
                             value={form.enText}
-                            onChange={(e) => setForm({...form, enText: e.target.value})}
+                            options={[
+                                // 80 - 100 - 120 - 150 - 180 - 200
+                                {name: '80 Protein 80 Carb', value: '80 Protein 80 Carb'},
+                                {name: '100 Protein 100 Carb', value: '100 Protein 100 Carb'},
+                                {name: '120 Protein 120 Carb', value: '120 Protein 120 Carb'},
+                                {name: '150 Protein 150 Carb', value: '150 Protein 150 Carb'},
+                                {name: '180 Protein 180 Carb', value: '180 Protein 180 Carb'},
+                                {name: '200 Protein 200 Carb', value: '200 Protein 200 Carb'},
+                            ]}
+                            onChange={(e) => setForm({...form, enText: e.value})}
+                            placeholder={"Select English Text on Card"}
                         />
                     </div>
                     <div className="field col-12">

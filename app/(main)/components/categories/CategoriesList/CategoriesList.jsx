@@ -54,9 +54,12 @@ export default function CategoriesList() {
 
         // API CALL /category/delete
         axios
-            .delete(`${process.env.API_URL}/category/delete/${category._id}`, {
+            .delete(`${process.env.API_URL}/delete/bundle/category`, {
                 headers: {
                     Authorization: `Bearer ${token}`
+                },
+                params: {
+                    categoryId: category._id
                 }
             })
             .then((_) => {
@@ -127,10 +130,10 @@ export default function CategoriesList() {
                 header={'Delete Category'}
                 footer={
                     <div className={'flex justify-center'}>
-                        <button className={'AMB_btn AMB_btn-danger'} onClick={() => deleteCategory(selectedBundleToDelete)}>
+                        <button className={'deleteButton'} onClick={() => deleteCategory(selectedCategoryToDelete)}>
                             {'Delete'}
                         </button>
-                        <button className={'AMB_btn AMB_btn-primary'} onClick={() => setSelectedCategoryToDelete(null)}>
+                        <button className={'cancelButton'} onClick={() => setSelectedCategoryToDelete(null)}>
                             {'Cancel'}
                         </button>
                     </div>
