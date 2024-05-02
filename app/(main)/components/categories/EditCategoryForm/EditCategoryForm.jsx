@@ -103,7 +103,7 @@ export default function EditCategoryForm({ id }) {
                     </div>
                     <div className={'field col-12 md:col-6'}>
                         <label
-                            htmlFor="categoryNameAR">'Category Name (AR)'</label>
+                            htmlFor="categoryNameAR">Category Name (AR)</label>
                         <InputText
                             id="categoryNameAR"
                             value={categoryNameAR}
