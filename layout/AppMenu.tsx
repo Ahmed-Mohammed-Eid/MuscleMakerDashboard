@@ -12,6 +12,22 @@ const AppMenu = () => {
             items: [{label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/'}]
         },
         {
+            label: "Categories",
+            icon: "pi pi-fw pi-list",
+            items: [
+                {
+                    label: "Categories List",
+                    icon: "pi pi-fw pi-list",
+                    to: "/categories",
+                },
+                {
+                    label: "Create Category",
+                    icon: "pi pi-fw pi-plus",
+                    to: "/categories/add",
+                }
+            ]
+        },
+        {
             label: 'Packages',
             icon: 'pi pi-list',
             items: [

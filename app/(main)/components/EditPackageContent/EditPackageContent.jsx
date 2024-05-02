@@ -77,7 +77,7 @@ export default function EditPackage({bundle, id}) {
         const token = localStorage.getItem("token");
 
         // VALIDATE THE FORM
-        if (!form.arName || !form.enName || !form.mealsNumber || !form.snacksNumber || !form.arText || !form.enText || !form.offersDays) {
+        if (!form.arName || !form.enName || !form.mealsNumber || !form.snacksNumber || !form.arText || !form.enText) {
             return toast.error("Please fill all the fields.");
         }
 

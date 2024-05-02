@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import CustomFileUpload from "../../components/customFileUpload";
 import ChooseExtra from "../../components/ChooseExtra";
 import ChooseTypes from "../../components/ChooseTypes";
+import MealVariations from "../../components/MealVariations";
 import {InputText} from "primereact/inputtext";
 import {Dropdown} from "primereact/dropdown";
 import {InputNumber} from "primereact/inputnumber";
@@ -24,6 +25,7 @@ export default function CreateMeal() {
     const [extra, setExtra] = useState()
     const [maximumExtraNumber, setMaximumExtraNumber] = useState(0)
     const [types, setTypes] = useState()
+    const [variations, setVariations] = useState()
     const [form, setForm] = useState({
         mealTitle: "",
         mealTitleEn: "",
@@ -49,8 +51,22 @@ export default function CreateMeal() {
         const token = localStorage.getItem("token");
 
         // VALIDATE THE FORM
-        if (!form.mealTitle || !form.mealTitleEn || !form.mealPrice || !form.mealCategory || !form.mealType || !form.carbohydrate || !form.fat || !form.calories || !form.protein || !form.sugar || !form.mealFoodicsId || !form.mealDescription || !mealImage ) {
+        if (!form.mealTitle || !form.mealTitleEn || !form.mealCategory || !form.mealType || !form.mealDescription || !mealImage ) {
             return toast.error("Please fill all the fields.");
+        }
+
+        // VALIDATE THE MEAL CATEGORY AND PRICE FOR SUBSCRIPTIONS
+        if (form?.mealCategory === "orders" && (!form.mealPrice || !form.mealFoodicsId)) {
+            return toast.error("Please fill meal price and foodics id for orders with valid values.");
+        }
+
+        // LOOP THROUGH THE VARIATIONS AND VALIDATE THEM THAT EVERY VARIATION HAS 6 FIELDS [title, protine, carbohydrates, fats, calories, sugar] AND THEY ARE NOT EMPTY
+        if (variations) {
+            for (let i = 0; i < variations.length; i++) {
+                if (!variations[i].title || !variations[i].protine || !variations[i].carbohydrates || !variations[i].fats || !variations[i].calories || !variations[i].sugar) {
+                    return toast.error("Please fill all the fields in the variations.");
+                }
+            }
         }
 
         // SET THE LOADING TO TRUE
@@ -67,18 +83,19 @@ export default function CreateMeal() {
         formData.append("mealTitleEn", form.mealTitleEn);
         formData.append("mealTypes", JSON.stringify(form.mealType));
         formData.append("menuType", form.mealCategory);
-        formData.append("protine", form.protein);
-        formData.append("carbohydrates", form.carbohydrate);
-        formData.append("fats", form.fat);
-        formData.append("calories", form.calories);
-        formData.append("sugar", form.sugar);
+        // formData.append("protine", form.protein);
+        // formData.append("carbohydrates", form.carbohydrate);
+        // formData.append("fats", form.fat);
+        // formData.append("calories", form.calories);
+        // formData.append("sugar", form.sugar);
         formData.append("mealDescription", form.mealDescription);
         formData.append("mealBlocked", form.blockMeal);
-        formData.append("mealPrice", form.mealPrice);
-        formData.append("foodicsId", form.mealFoodicsId);
+        formData.append("mealPrice", form.mealCategory === "orders" ? form.mealPrice : 0);
+        formData.append("foodicsId", form.mealCategory === "orders" ? form.mealFoodicsId : '');
         formData.append("allowedExtras", maximumExtraNumber);
         formData.append("extras", JSON.stringify(extra));
         formData.append("options", JSON.stringify(types));
+        formData.append("nutritions", JSON.stringify(variations));
 
         // LOOP THROUGH THE FILES AND APPEND THEM TO THE FORM DATA
         for (let i = 0; i < mealImage.length; i++) {
@@ -190,7 +207,7 @@ export default function CreateMeal() {
                             maxSelectedLabels={3}
                             className="w-full"/>
                     </div>
-                    <div className="field col-12 md:col-6">
+                    {(form?.mealCategory === "orders") && (<div className="field col-12 md:col-6">
                         <label htmlFor="mealPrice">Meal Price</label>
                         <InputNumber
                             id="mealPrice"
@@ -202,73 +219,74 @@ export default function CreateMeal() {
                             value={form.mealPrice}
                             onChange={(e) => setForm({...form, mealPrice: e.value})}
                         />
-                    </div>
-                    <div className="field col-12 md:col-6">
-                        <label htmlFor="carbohydrate">Carbohydrate</label>
-                        <InputNumber
-                            id="carbohydrate"
-                            placeholder={"Enter Carbohydrate"}
-                            mode="decimal"
-                            minFractionDigits={0}
-                            maxFractionDigits={0}
-                            min={0}
-                            value={form.carbohydrate}
-                            onChange={(e) => setForm({...form, carbohydrate: e.value})}
-                        />
-                    </div>
-                    <div className="field col-12 md:col-6">
-                        <label htmlFor="fat">Fat</label>
-                        <InputNumber
-                            id="fat"
-                            placeholder={"Enter Fat"}
-                            mode="decimal"
-                            minFractionDigits={0}
-                            maxFractionDigits={0}
-                            min={0}
-                            value={form.fat}
-                            onChange={(e) => setForm({...form, fat: e.value})}
-                        />
-                    </div>
-                    <div className="field col-12 md:col-6">
-                        <label htmlFor="protein">Protein</label>
-                        <InputNumber
-                            id="protein"
-                            placeholder={"Enter Protein"}
-                            mode="decimal"
-                            minFractionDigits={0}
-                            maxFractionDigits={0}
-                            min={0}
-                            value={form.protein}
-                            onChange={(e) => setForm({...form, protein: e.value})}
-                        />
-                    </div>
-                    <div className="field col-12 md:col-6">
-                        <label htmlFor="sugar">Sugar</label>
-                        <InputNumber
-                            id="sugar"
-                            placeholder={"Enter Sugar"}
-                            mode="decimal"
-                            minFractionDigits={0}
-                            maxFractionDigits={0}
-                            min={0}
-                            value={form.sugar}
-                            onChange={(e) => setForm({...form, sugar: e.value})}
-                        />
-                    </div>
-                    <div className="field col-12 md:col-6">
-                        <label htmlFor="calories">Calories</label>
-                        <InputNumber
-                            id="calories"
-                            placeholder={"Enter Calories"}
-                            mode="decimal"
-                            minFractionDigits={0}
-                            maxFractionDigits={0}
-                            min={0}
-                            value={form.calories}
-                            onChange={(e) => setForm({...form, calories: e.value})}
-                        />
-                    </div>
-                    <div className="field col-12">
+                    </div>)}
+                    {/*<div className="field col-12 md:col-6">*/}
+                    {/*    <label htmlFor="carbohydrate">Carbohydrate</label>*/}
+                    {/*    <InputNumber*/}
+                    {/*        id="carbohydrate"*/}
+                    {/*        placeholder={"Enter Carbohydrate"}*/}
+                    {/*        mode="decimal"*/}
+                    {/*        minFractionDigits={0}*/}
+                    {/*        maxFractionDigits={0}*/}
+                    {/*        min={0}*/}
+                    {/*        value={form.carbohydrate}*/}
+                    {/*        onChange={(e) => setForm({...form, carbohydrate: e.value})}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
+                    {/*<div className="field col-12 md:col-6">*/}
+                    {/*    <label htmlFor="fat">Fat</label>*/}
+                    {/*    <InputNumber*/}
+                    {/*        id="fat"*/}
+                    {/*        placeholder={"Enter Fat"}*/}
+                    {/*        mode="decimal"*/}
+                    {/*        minFractionDigits={0}*/}
+                    {/*        maxFractionDigits={0}*/}
+                    {/*        min={0}*/}
+                    {/*        value={form.fat}*/}
+                    {/*        onChange={(e) => setForm({...form, fat: e.value})}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
+                    {/*<div className="field col-12 md:col-6">*/}
+                    {/*    <label htmlFor="protein">Protein</label>*/}
+                    {/*    <InputNumber*/}
+                    {/*        id="protein"*/}
+                    {/*        placeholder={"Enter Protein"}*/}
+                    {/*        mode="decimal"*/}
+                    {/*        minFractionDigits={0}*/}
+                    {/*        maxFractionDigits={0}*/}
+                    {/*        min={0}*/}
+                    {/*        value={form.protein}*/}
+                    {/*        onChange={(e) => setForm({...form, protein: e.value})}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
+                    {/*<div className="field col-12 md:col-6">*/}
+                    {/*    <label htmlFor="sugar">Sugar</label>*/}
+                    {/*    <InputNumber*/}
+                    {/*        id="sugar"*/}
+                    {/*        placeholder={"Enter Sugar"}*/}
+                    {/*        mode="decimal"*/}
+                    {/*        minFractionDigits={0}*/}
+                    {/*        maxFractionDigits={0}*/}
+                    {/*        min={0}*/}
+                    {/*        value={form.sugar}*/}
+                    {/*        onChange={(e) => setForm({...form, sugar: e.value})}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
+                    {/*<div className={`field col-12 ${form?.mealCategory === "orders" ? "md:col-6" : ""}`}>*/}
+                    {/*    <label htmlFor="calories">Calories</label>*/}
+                    {/*    <InputNumber*/}
+                    {/*        id="calories"*/}
+                    {/*        placeholder={"Enter Calories"}*/}
+                    {/*        mode="decimal"*/}
+                    {/*        minFractionDigits={0}*/}
+                    {/*        maxFractionDigits={0}*/}
+                    {/*        min={0}*/}
+                    {/*        value={form.calories}*/}
+                    {/*        onChange={(e) => setForm({...form, calories: e.value})}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
+
+                    {(form?.mealCategory === "orders") && (<div className={`field col-12 ${form?.mealCategory === "orders" ? "md:col-6" : ""}`}>
                         <label htmlFor="mealFoodicsId">Meal Foodics Id</label>
                         <InputText
                             id="mealFoodicsId"
@@ -277,7 +295,7 @@ export default function CreateMeal() {
                             value={form.mealFoodicsId}
                             onChange={(e) => setForm({...form, mealFoodicsId: e.target.value})}
                         />
-                    </div>
+                    </div>)}
                     <div className="field col-12">
                         <label htmlFor="mealDescription">Meal Description</label>
                         <InputTextarea
@@ -320,6 +338,12 @@ export default function CreateMeal() {
             <ChooseTypes getType={(types) => {
                 setTypes(types)
             }}/>
+
+            <MealVariations
+                getVariation={(variation) => {
+                    setVariations(variation)
+                }}
+            />
 
             <div
                 className="mt-4"

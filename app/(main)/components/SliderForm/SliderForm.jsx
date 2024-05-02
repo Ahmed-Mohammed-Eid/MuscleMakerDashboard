@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import CustomFileUpload from "../customFileUpload/customFileUpload";
 import {Button} from "primereact/button";
 import {ProgressSpinner} from "primereact/progressspinner";
+import {InputNumber} from "primereact/inputnumber";
 import {toast} from "react-hot-toast";
 import axios from "axios";
 
@@ -13,7 +14,8 @@ export default function SliderForm() {
 
     // STATE
     const [form, setForm] = useState({
-        files: []
+        files: [],
+        position: '',
     });
 
     // HANDLERS
@@ -30,6 +32,12 @@ export default function SliderForm() {
             return;
         }
 
+        // CHECK IF THE POSITION IS NOT A NUMBER OR LESS THAN 1 OR GREATER THAN FILES LENGTH
+        if (isNaN(form.position) || form.position < 1 || form.position > form.files.length) {
+            toast.error("Please enter a valid position number.");
+            return;
+        }
+
         // SET THE LOADING TO TRUE
         setLoading(true);
 
@@ -43,6 +51,11 @@ export default function SliderForm() {
         for (let i = 0; i < form.files.length; i++) {
             formData.append("files", form.files[i]);
         }
+
+        if (form.position) {
+            formData.append("clickablePosition", form.position);
+        }
+
 
         // SEND THE REQUEST
         axios.post(`${process.env.API_URL}/carousel/ads`, formData, {
@@ -73,7 +86,7 @@ export default function SliderForm() {
                     </label>
                     <CustomFileUpload
                         setFiles={(files) => {
-                            setForm({ ...form, files })
+                            setForm({...form, files})
                         }}
                         accept={"image/*"}
                         multiple={true}
@@ -85,10 +98,26 @@ export default function SliderForm() {
                                 return i !== index
                             })
                             // SET THE STATE
-                            setForm({ ...form, files: newItems })
+                            setForm({...form, files: newItems})
                         }}
                     />
                 </div>
+
+                {/*POSITION CLICKABLE*/}
+                <div className="col-12 mb-2 lg:mb-2">
+                    <label className={"mb-2 block"} htmlFor="position">
+                        Clickable Position (Clickable Image Number: 1, 2, 3, 4, 5, ...)
+                    </label>
+                    <InputNumber
+                        id="position"
+                        value={form.position}
+                        onValueChange={(e) => setForm({...form, position: e.value})}
+                        placeholder={"Clickable Image Number"}
+                        min={1}
+                    />
+                </div>
+
+
                 <div className="field col-12 mt-4 ml-auto">
                     <Button
                         type={"submit"}
@@ -96,8 +125,8 @@ export default function SliderForm() {
                                                           style={{
                                                               width: '2rem',
                                                               height: '2rem'
-                                                          }} /> : `ADD`}
-                        disabled={loading} />
+                                                          }}/> : `ADD`}
+                        disabled={loading}/>
                 </div>
             </form>
         </div>

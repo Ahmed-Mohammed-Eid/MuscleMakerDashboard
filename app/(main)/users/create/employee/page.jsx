@@ -113,8 +113,9 @@ export default function CreateEmployee() {
                         placeholder={"Select Employee Role"}
                         options={[
                             {label: "Admin", value: "admin"},
+                            {label: 'Manager', value: 'manager'},
                             {label: "Employee", value: "employee"},
-                            {label: 'Manager', value: 'manager'}
+                            {label: "Chef", value: "chef"},
                         ]}
                         value={form.employeeRole}
                         onChange={(e) => setForm({...form, employeeRole: e.target.value})}
