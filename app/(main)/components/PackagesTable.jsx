@@ -185,6 +185,24 @@ export default function PackagesTable() {
                     </span>
                         )
                     }}/>
+
+                {/*DEACTIVATED OPTION*/}
+                <Column
+                    field="isActivated"
+                    header="Active"
+                    sortable
+                    filter
+                    body={(rowData) => {
+                        return (
+                            <span className="text-center font-bold">
+                                {rowData.deActivate ? <span className="text-red-500">No</span> :
+                                    <span className="text-green-500">Yes</span>}
+                            </span>
+                        )
+                    }}
+                />
+
+
                 <Column
                     field={'_id'}
                     header={'Actions'}

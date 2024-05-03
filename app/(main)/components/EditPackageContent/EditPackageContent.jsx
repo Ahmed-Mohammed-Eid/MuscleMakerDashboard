@@ -41,6 +41,8 @@ export default function EditPackage({bundle, id}) {
         breakfast: false,
         lunch: false,
         dinner: false,
+        // DEACTIVATED
+        deActivate: ""
     });
 
     // EFFECT TO SET THE FORM
@@ -62,7 +64,8 @@ export default function EditPackage({bundle, id}) {
                 breakfast: memoizedBundle.mealsType.includes('افطار'),
                 lunch: memoizedBundle.mealsType.includes('غداء'),
                 dinner: memoizedBundle.mealsType.includes('عشاء'),
-                fridayPrice: memoizedBundle.fridayPrice || 0
+                fridayPrice: memoizedBundle.fridayPrice || 0,
+                deActivate: memoizedBundle.deActivate
             })
 
             // SET THE PRICES
@@ -112,6 +115,7 @@ export default function EditPackage({bundle, id}) {
         formData.append("dinner", form.dinner);
         formData.append("periodPrices", JSON.stringify(prices));
         formData.append("fridayPrice", form.fridayPrice || 0);
+        formData.append("deActivate", form.deActivate);
 
         // SEND THE REQUEST
         axios.put(`${process.env.API_URL}/edit/bundle`, formData, {
@@ -414,6 +418,26 @@ export default function EditPackage({bundle, id}) {
                             onChange={(e) => setForm({...form, fridayPrice: e.value})}
                         />
                     </div>)}
+
+                    {/*  DEACTIVATE  */}
+                    <div className="field col-12">
+                        <div className="flex flex-wrap justify-content-start gap-3">
+                            <div className="flex align-items-center">
+                                <Checkbox
+                                    inputId="deActivate"
+                                    name="deActivate"
+                                    value="deActivate"
+                                    onChange={(event) => {
+                                        setForm({
+                                            ...form, deActivate: event.checked
+                                        })
+                                    }}
+                                    checked={form.deActivate}
+                                />
+                                <label htmlFor="deActivate" className="ml-2">Deactivate</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <ChoosePrices
