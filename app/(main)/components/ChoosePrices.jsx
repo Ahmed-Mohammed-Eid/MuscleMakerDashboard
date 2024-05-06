@@ -39,7 +39,7 @@ export default function ChoosePrices({getPrices, selectedPrices}) {
                                         {label: '2 weeks', value: '2 weeks'},
                                         {label: '3 weeks', value: '3 weeks'},
                                         {label: '1 month (24)', value: '1 month (24)'},
-                                        {label: '1 months (26)', value: '2 months (26)'},
+                                        {label: '1 month (26)', value: '1 month (26)'},
 
                                     ]}
                                     onChange={(e) => {
