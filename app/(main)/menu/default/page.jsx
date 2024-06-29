@@ -89,8 +89,7 @@ export default function DefaultPage() {
 
     return (
         <>
-            <form className={"card flex gap-2 justify-content-end flex-wrap mb-2"}
-                  onSubmit={(e) => e.preventDefault()}>
+            <form className={"card flex gap-2 justify-content-end flex-wrap mb-2"} onSubmit={(e) => e.preventDefault()}>
                 <Button
                     label={'Selected Days List'}
                     severity={'help'}
@@ -101,14 +100,36 @@ export default function DefaultPage() {
                 <Dropdown
                     value={selectedDay}
                     style={{width: '100%', maxWidth: '200px'}}
+                    filter={true}
                     options={[
-                        {label: 'Saturday', value: 'Sat'},
-                        {label: 'Sunday', value: 'Sun'},
-                        {label: 'Monday', value: 'Mon'},
-                        {label: 'Tuesday', value: 'Tue'},
-                        {label: 'Wednesday', value: 'Wed'},
-                        {label: 'Thursday', value: 'Thu'},
-                        {label: 'Friday', value: 'Fri'},
+                        {label: 'Saturday 1', value: 'sat1'},
+                        {label: 'Sunday 1', value: 'sun1'},
+                        {label: 'Monday 1', value: 'mon1'},
+                        {label: 'Tuesday 1', value: 'tue1'},
+                        {label: 'Wednesday 1', value: 'wed1'},
+                        {label: 'Thursday 1', value: 'thu1'},
+                        {label: 'Friday 1', value: 'fri1'},
+                        {label: 'Saturday 2', value: 'sat2'},
+                        {label: 'Sunday 2', value: 'sun2'},
+                        {label: 'Monday 2', value: 'mon2'},
+                        {label: 'Tuesday 2', value: 'tue2'},
+                        {label: 'Wednesday 2', value: 'wed2'},
+                        {label: 'Thursday 2', value: 'thu2'},
+                        {label: 'Friday 2', value: 'fri2'},
+                        {label: 'Saturday 3', value: 'sat3'},
+                        {label: 'Sunday 3', value: 'sun3'},
+                        {label: 'Monday 3', value: 'mon3'},
+                        {label: 'Tuesday 3', value: 'tue3'},
+                        {label: 'Wednesday 3', value: 'wed3'},
+                        {label: 'Thursday 3', value: 'thu3'},
+                        {label: 'Friday 3', value: 'fri3'},
+                        {label: 'Saturday 4', value: 'sat4'},
+                        {label: 'Sunday 4', value: 'sun4'},
+                        {label: 'Monday 4', value: 'mon4'},
+                        {label: 'Tuesday 4', value: 'tue4'},
+                        {label: 'Wednesday 4', value: 'wed4'},
+                        {label: 'Thursday 4', value: 'thu4'},
+                        {label: 'Friday 4', value: 'fri4'},
                     ]}
                     onChange={(e) => {
                         setSelectedDay(e.value);

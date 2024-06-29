@@ -51,10 +51,17 @@ export default function ChefSelectedPage() {
 
     // FUNCTION TO GET THE FULL NAME OF THE DAY
     const getDayName = (day) => {
+        // EXTRACT THE FIRST 3 LETTERS OF THE DAY
+        let dayWithoutNumber = day.substring(0, 3);
+        // MAKE THE FIRST LETTER UPPERCASE
+        dayWithoutNumber = dayWithoutNumber.charAt(0).toUpperCase() + dayWithoutNumber.slice(1);
+
         // GET THE DATE AND FORMAT IT TO SHOW THE FULL NAME BASED ON THE SHORT NAME FOR EXAMPLE 'Sat' TO 'Saturday'
         const days = ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
         // GET THE DATE WITH THE FIRST 3 LETTERS OF THE DAY
-        return days.find(d => d.startsWith(day));
+        const resultDay =  days.find(d => d.startsWith(dayWithoutNumber));
+        // ADD THE DAY NUMBER TO THE DAY
+        return resultDay + ' ' + day.substring(3);
     }
 
     return (
