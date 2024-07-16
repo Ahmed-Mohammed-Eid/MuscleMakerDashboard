@@ -238,3 +238,15 @@ a[href="/login"] {
     color: #ffffff;
     border-color: #4338CA;
 }
+
+/* DIALOG SIZE*/
+.dialogSize{
+    width: 90% !important;
+}
+
+@media screen and (min-width: 576px) {
+    .dialogSize{
+        width: 70% !important;
+        max-width: 600px !important;
+    }
+}

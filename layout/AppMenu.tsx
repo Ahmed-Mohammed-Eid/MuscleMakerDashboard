@@ -114,6 +114,23 @@ const AppMenu = () => {
             ]
         },
         {
+            label: "Wallet Offers",
+            icon: "pi pi-fw pi-wallet",
+            items: [
+                {
+                    label: "Wallets.jsx Offers List",
+                    icon: "pi pi-fw pi-wallet",
+                    to: "/walletOffers",
+                },
+                // CREATE
+                {
+                    label: "Create Wallet Offer",
+                    icon: "pi pi-fw pi-plus",
+                    to: "/walletOffers/create",
+                }
+            ]
+        },
+        {
             label: "UI Management",
             icon: "pi pi-fw pi-cog",
             items: [

@@ -523,6 +523,15 @@ export default function UsersTable() {
                             return (
                                 <div className="flex justify-center gap-2">
                                     <button
+                                        className="editButton"
+                                        onClick={() => {
+                                            router.push(`/users/wallet/${rowData._id}`)
+                                        }}
+                                    >
+                                        Wallet
+                                    </button>
+
+                                    <button
                                         className="viewButton"
                                         onClick={() => {
                                             setClientData(rowData);
