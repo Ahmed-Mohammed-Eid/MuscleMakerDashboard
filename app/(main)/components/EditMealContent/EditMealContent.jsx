@@ -88,11 +88,6 @@ export default function EditMeal({meal, id}) {
         formData.append("mealTitleEn", form.mealTitleEn);
         formData.append("mealType", form.mealType);
         formData.append("menuType", form.mealCategory);
-        // formData.append("protine", form.protein);
-        // formData.append("carbohydrates", form.carbohydrate);
-        // formData.append("fats", form.fat);
-        // formData.append("calories", form.calories);
-        // formData.append("sugar", form.sugar);
         formData.append("mealDescription", form.mealDescription);
         formData.append("mealBlocked", form.blockMeal);
         formData.append("mealPrice", form.mealCategory === "orders" ? form.mealPrice : 0);
@@ -131,11 +126,6 @@ export default function EditMeal({meal, id}) {
             mealPrice: meal?.mealPrice || "",
             mealCategory: meal?.menuType || "",
             mealType: meal?.mealType || "",
-            // carbohydrate: meal?.carbohydrates || "",
-            // fat: meal?.fats || "",
-            // calories: meal?.calories || "",
-            // protein: meal?.protine || "",
-            // sugar: meal?.sugar || "",
             mealDescription: meal?.mealDescription || "",
             blockMeal: meal?.mealBlocked || false,
             mealFoodicsId: meal?.foodicsId || "",
@@ -241,71 +231,6 @@ export default function EditMeal({meal, id}) {
                             onChange={(e) => setForm({...form, mealPrice: e.value})}
                         />
                     </div>)}
-                    {/*<div className="field col-12 md:col-6">*/}
-                    {/*    <label htmlFor="carbohydrate">Carbohydrate</label>*/}
-                    {/*    <InputNumber*/}
-                    {/*        id="carbohydrate"*/}
-                    {/*        placeholder={"Enter Carbohydrate"}*/}
-                    {/*        mode="decimal"*/}
-                    {/*        minFractionDigits={0}*/}
-                    {/*        maxFractionDigits={0}*/}
-                    {/*        min={0}*/}
-                    {/*        value={form.carbohydrate}*/}
-                    {/*        onChange={(e) => setForm({...form, carbohydrate: e.value})}*/}
-                    {/*    />*/}
-                    {/*</div>*/}
-                    {/*<div className="field col-12 md:col-6">*/}
-                    {/*    <label htmlFor="fat">Fat</label>*/}
-                    {/*    <InputNumber*/}
-                    {/*        id="fat"*/}
-                    {/*        placeholder={"Enter Fat"}*/}
-                    {/*        mode="decimal"*/}
-                    {/*        minFractionDigits={0}*/}
-                    {/*        maxFractionDigits={0}*/}
-                    {/*        min={0}*/}
-                    {/*        value={form.fat}*/}
-                    {/*        onChange={(e) => setForm({...form, fat: e.value})}*/}
-                    {/*    />*/}
-                    {/*</div>*/}
-                    {/*<div className="field col-12 md:col-6">*/}
-                    {/*    <label htmlFor="protein">Protein</label>*/}
-                    {/*    <InputNumber*/}
-                    {/*        id="protein"*/}
-                    {/*        placeholder={"Enter Protein"}*/}
-                    {/*        mode="decimal"*/}
-                    {/*        minFractionDigits={0}*/}
-                    {/*        maxFractionDigits={0}*/}
-                    {/*        min={0}*/}
-                    {/*        value={form.protein}*/}
-                    {/*        onChange={(e) => setForm({...form, protein: e.value})}*/}
-                    {/*    />*/}
-                    {/*</div>*/}
-                    {/*<div className="field col-12 md:col-6">*/}
-                    {/*    <label htmlFor="sugar">Sugar</label>*/}
-                    {/*    <InputNumber*/}
-                    {/*        id="sugar"*/}
-                    {/*        placeholder={"Enter Sugar"}*/}
-                    {/*        mode="decimal"*/}
-                    {/*        minFractionDigits={0}*/}
-                    {/*        maxFractionDigits={0}*/}
-                    {/*        min={0}*/}
-                    {/*        value={form.sugar}*/}
-                    {/*        onChange={(e) => setForm({...form, sugar: e.value})}*/}
-                    {/*    />*/}
-                    {/*</div>*/}
-                    {/*<div className="field col-12 md:col-6">*/}
-                    {/*    <label htmlFor="calories">Calories</label>*/}
-                    {/*    <InputNumber*/}
-                    {/*        id="calories"*/}
-                    {/*        placeholder={"Enter Calories"}*/}
-                    {/*        mode="decimal"*/}
-                    {/*        minFractionDigits={0}*/}
-                    {/*        maxFractionDigits={0}*/}
-                    {/*        min={0}*/}
-                    {/*        value={form.calories}*/}
-                    {/*        onChange={(e) => setForm({...form, calories: e.value})}*/}
-                    {/*    />*/}
-                    {/*</div>*/}
                     {(form?.mealCategory === "orders") && (
                         <div className={`field col-12 ${form?.mealCategory === "orders" ? "md:col-6" : ""}`}>
                             <label htmlFor="mealFoodicsId">Meal Foodics Id</label>

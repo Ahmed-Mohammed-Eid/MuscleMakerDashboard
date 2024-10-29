@@ -10,7 +10,6 @@ import {useRouter} from "next/navigation";
 import {Dialog} from "primereact/dialog";
 import {Button} from "primereact/button";
 import {TabMenu} from "primereact/tabmenu";
-import {Dropdown} from "primereact/dropdown";
 
 
 export default function MealsTable() {
@@ -19,13 +18,10 @@ export default function MealsTable() {
     const router = useRouter();
 
     //STATE FOR THE MEALS
-    const [page, setPage] = React.useState(1);
     const [meals, setMeals] = React.useState([]);
     const [visible, setVisible] = React.useState(false);
     const [mealIdToDelete, setMealIdToDelete] = React.useState(null);
-    // LOAD MORE STATES
-    const [loadDataOption, setLoadDataOption] = useState("saveOldData");
-    const [hasNextPage, setHasNextPage] = useState(false);
+
     // STATE
     const [menuType, setMenuType] = useState("orders");
 
@@ -42,26 +38,10 @@ export default function MealsTable() {
             params: {
                 menuType: menuType,
                 mealType: 'all',
-                // page: page,
             }
         })
             .then(res => {
-                if (loadDataOption === "saveOldData" && page > 1) {
-                    // GET A COPY OF THE ORDERS ARRAY
-                    const mealsCopy = [...meals];
-                    // PUSH THE NEW ORDERS TO THE ORDERS ARRAY
-                    mealsCopy.push(...res.data.data.meals);
-                    // SET THE ORDERS ARRAY
-                    setMeals(mealsCopy);
-                    // SET THE LOAD MORE OPTION TO NULL
-                    setLoadDataOption(null);
-                    // SET THE HAS NEXT PAGE TO FALSE
-                    setHasNextPage(res.data.data.hasNextPage);
-                } else {
-                    setMeals(res.data.data.meals);
-                    // SET THE HAS NEXT PAGE TO FALSE
-                    setHasNextPage(res.data.data.hasNextPage);
-                }
+                setMeals(res.data?.data?.meals || []);
             })
             .catch(error => {
                 toast.error(error?.response?.data?.message || "An error occurred while getting the meals.");
@@ -71,7 +51,7 @@ export default function MealsTable() {
     // EFFECT TO GET THE MEALS
     useEffect(() => {
         getMeals();
-    }, [menuType, page]);
+    }, [menuType]);
 
     // DELETE THE PACKAGE HANDLER
     const deleteHandler = async () => {
@@ -95,7 +75,7 @@ export default function MealsTable() {
                 getMeals();
             })
             .catch(err => {
-                toast.error(err.response?.data?.message || res.message);
+                toast.error(err.response?.data?.message || err?.message || "An error occurred while deleting the meal.");
             })
     }
 
@@ -122,69 +102,18 @@ export default function MealsTable() {
 
     return (
         <>
-            {hasNextPage && (<div className="mb-3 w-full" style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "flex-end",
-            }}>
-                {/*  BUTTON TO LOAD MORE  */}
-                <div style={{
-                    display: "flex",
-                    alignItems: "initial",
-                    justifyContent: "space-between",
-                }}>
-                    <Dropdown
-                        value={loadDataOption}
-                        options={[
-                            {
-                                label: "Don't Save Old Orders",
-                                value: "dontSaveOldData",
-                            },
-                            {
-                                label: "Save Old Orders",
-                                value: "saveOldData",
-                            },
-                        ]}
-                        onChange={(e) => {
-                            setLoadDataOption(e.value);
-                        }}
-                        placeholder="Load More"
-                        style={{
-                            marginRight: "1rem",
-                        }}
-                    />
-                    <button
-                        className="button text-white px-6 py-2 border-round border-none pointer custom-button inline-block scale-95"
-                        onClick={() => {
-                            if (!hasNextPage) {
-                                return toast.error("No more orders to load")
-                            }
-
-                            if (!loadDataOption) {
-                                return toast.error("Please select how should we load the orders")
-                            }
-
-                            setPage(page + 1);
-                        }}
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            gap: '5px',
-                            marginLeft: "auto",
-                            marginRight: ".5rem",
-                            backgroundColor: "#28a745",
-                        }}
-                    >
-                        Next Part <i className="pi pi-angle-double-right"/>
-                    </button>
-                </div>
-            </div>)}
-
             <TabMenu
                 model={[
-                    {label: 'ORDERS', icon: 'pi pi-fw pi-home', command: () => setMenuType("orders")},
-                    {label: 'SUBSCRIPTIONS', icon: 'pi pi-fw pi-calendar', command: () => setMenuType("subscriptions")},
+                    {
+                        label: 'ORDERS', icon: 'pi pi-fw pi-home', command: () => {
+                            // SET THE MENU TYPE
+                            setMenuType("orders")
+                        }
+                    },
+                    {label: 'SUBSCRIPTIONS', icon: 'pi pi-fw pi-calendar', command: () => {
+                            // SET THE MENU TYPE
+                            setMenuType("subscriptions")
+                        }},
                 ]}
             />
             <DataTable
@@ -203,7 +132,7 @@ export default function MealsTable() {
                         return (
                             <Image
                                 src={rowData.imagePath}
-                                alt={rowData.mealTitle}
+                                alt={rowData?.mealTitle}
                                 width={50}
                                 height={50}
                                 style={{
@@ -254,8 +183,13 @@ export default function MealsTable() {
                                 <button
                                     className="copyButton"
                                     onClick={() => {
-                                        navigator.clipboard.writeText(rowData._id);
-                                        toast.success("Meal ID Copied");
+                                        navigator.clipboard.writeText(rowData._id)
+                                            .then(() =>{
+                                                toast.success("Meal ID Copied");
+                                            })
+                                            .catch(() => {
+                                                toast.error("An error occurred while copying the ID.");
+                                            })
                                     }}
                                 >
                                     Copy ID
