@@ -118,7 +118,7 @@ const AppMenu = () => {
             icon: "pi pi-fw pi-wallet",
             items: [
                 {
-                    label: "Wallets.jsx Offers List",
+                    label: "Wallets Offers List",
                     icon: "pi pi-fw pi-wallet",
                     to: "/walletOffers",
                 },

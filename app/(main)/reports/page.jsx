@@ -66,12 +66,13 @@ export default function Reports() {
                             }}
                             placeholder="Report Type"
                             options={[
+                                { label: 'Active Clients', value: 'active clients' },
                                 {label: "Kitchen Meals", value: "kitchenMeals"},
                             ]}
                         />
                     </div>
 
-                    <div className="field col-12 md:col-6">
+                    {(reportType === "kitchenMeals") && (<div className="field col-12 md:col-6">
                         <label htmlFor="startDate">Start Date</label>
                         <Calendar
                             id="startDate"
@@ -83,9 +84,9 @@ export default function Reports() {
                             dateFormat="dd/mm/yy"
                             showIcon={true}
                         />
-                    </div>
+                    </div>)}
 
-                    <div className="field col-12 md:col-6">
+                    {(reportType === "kitchenMeals") && (<div className="field col-12 md:col-6">
                         <label htmlFor="endDate">End Date</label>
                         <Calendar
                             id="endDate"
@@ -97,7 +98,7 @@ export default function Reports() {
                             dateFormat="dd/mm/yy"
                             showIcon={true}
                         />
-                    </div>
+                    </div>)}
 
                     <div className="field col-6 ml-auto mt-4">
                         <Button
