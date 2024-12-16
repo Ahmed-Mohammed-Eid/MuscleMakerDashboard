@@ -20,14 +20,23 @@ import {
     NodeRef,
     AppTopbarRef,
     MenuModelItem,
-    AppMenuItemProps,
-    AppMenuItem
+    AppMenuItemProps
 } from './layout';
 import { Demo, LayoutType, SortOrderType, CustomEvent, ChartDataState, ChartOptionsState, AppMailSidebarItem, AppMailReplyProps, AppMailProps } from './demo';
 
 type ChildContainerProps = {
     children: ReactNode;
 };
+
+export interface AppMenuItem {
+    label: string;
+    icon?: string;
+    to?: string;
+    items?: AppMenuItem[];
+    command?: () => void;
+    key?: string;
+    separator?: boolean;
+}
 
 export type {
     Page,
@@ -57,6 +66,5 @@ export type {
     ChartOptionsState,
     AppMailSidebarItem,
     AppMailReplyProps,
-    AppMailProps,
-    AppMenuItem
+    AppMailProps
 };

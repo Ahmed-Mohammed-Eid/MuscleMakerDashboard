@@ -3,187 +3,192 @@ import React from 'react';
 import AppMenuitem from './AppMenuitem';
 import { MenuProvider } from './context/menucontext';
 import { AppMenuItem } from '../types/types';
+import { useTranslations, useLocale } from 'next-intl';
 
 const AppMenu = () => {
+    const t = useTranslations();
+    const locale = useLocale();
+    const isRTL = locale === 'ar';
+
     const model: AppMenuItem[] = [
         {
-            label: 'Home',
-            items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' }]
+            label: t('AppMenu.home'),
+            items: [{ label: t('AppMenu.dashboard'), icon: 'pi pi-fw pi-home', to: `/${locale}` }]
         },
         {
-            label: 'Categories',
+            label: t('AppMenu.categories'),
             icon: 'pi pi-fw pi-list',
             items: [
                 {
-                    label: 'Categories List',
+                    label: t('AppMenu.categoriesList'),
                     icon: 'pi pi-fw pi-list',
-                    to: '/categories'
+                    to: `/${locale}/categories`
                 },
                 {
-                    label: 'Create Category',
+                    label: t('AppMenu.createCategory'),
                     icon: 'pi pi-fw pi-plus',
-                    to: '/categories/add'
+                    to: `/${locale}/categories/add`
                 }
             ]
         },
         {
-            label: 'Packages',
+            label: t('AppMenu.packages'),
             icon: 'pi pi-list',
             items: [
                 {
-                    label: 'Packages List',
+                    label: t('AppMenu.packagesList'),
                     icon: 'pi pi-fw pi-list',
-                    to: '/packages'
+                    to: `/${locale}/packages`
                 },
                 {
-                    label: 'Create Package',
+                    label: t('AppMenu.createPackage'),
                     icon: 'pi pi-fw pi-plus',
-                    to: '/packages/create'
+                    to: `/${locale}/packages/create`
                 }
             ]
         },
         {
-            label: 'Meals',
+            label: t('AppMenu.meals'),
             icon: 'pi pi-fw pi-list',
             items: [
                 {
-                    label: 'Meals List',
+                    label: t('AppMenu.mealsList'),
                     icon: 'pi pi-fw pi-list',
-                    to: '/meals'
+                    to: `/${locale}/meals`
                 },
                 {
-                    label: 'Create Meal',
+                    label: t('AppMenu.createMeal'),
                     icon: 'pi pi-fw pi-plus',
-                    to: '/meals/create'
+                    to: `/${locale}/meals/create`
                 }
             ]
         },
         {
-            label: 'Menu Settings',
+            label: t('AppMenu.menuSettings'),
             icon: 'pi pi-fw pi-cog',
             items: [
                 {
-                    label: 'Default Menu',
+                    label: t('AppMenu.defaultMenu'),
                     icon: 'pi pi-fw pi-calendar',
-                    to: '/menu/default'
+                    to: `/${locale}/menu/default`
                 },
                 {
-                    label: 'Chef Menu',
+                    label: t('AppMenu.chefMenu'),
                     icon: 'pi pi-fw pi-calendar',
-                    to: '/menu/chef'
+                    to: `/${locale}/menu/chef`
                 }
             ]
         },
         {
-            label: 'Day Boxes List',
+            label: t('AppMenu.dayBoxesList'),
             icon: 'pi pi-fw pi-list',
             items: [
                 {
-                    label: 'Day Boxes List',
+                    label: t('AppMenu.dayBoxesList'),
                     icon: 'pi pi-fw pi-list',
-                    to: '/dayboxes'
+                    to: `/${locale}/dayboxes`
                 },
                 {
-                    label: 'Create Day Box',
+                    label: t('AppMenu.createDayBox'),
                     icon: 'pi pi-fw pi-plus',
-                    to: '/dayboxes/create'
+                    to: `/${locale}/dayboxes/create`
                 }
             ]
         },
         {
-            label: 'Users',
+            label: t('AppMenu.users'),
             icon: 'pi pi-fw pi-users',
             items: [
                 {
-                    label: 'Users List',
+                    label: t('AppMenu.usersList'),
                     icon: 'pi pi-fw pi-list',
-                    to: '/users'
+                    to: `/${locale}/users`
                 }
             ]
         },
         {
-            label: 'Branches',
+            label: t('AppMenu.branches'),
             icon: 'pi pi-fw pi-home',
             items: [
                 {
-                    label: 'Branches List',
+                    label: t('AppMenu.branchesList'),
                     icon: 'pi pi-fw pi-list',
-                    to: '/branches'
+                    to: `/${locale}/branches`
                 }
             ]
         },
         {
-            label: 'Wallet Offers',
+            label: t('AppMenu.walletOffers'),
             icon: 'pi pi-fw pi-wallet',
             items: [
                 {
-                    label: 'Wallets Offers List',
+                    label: t('AppMenu.walletOffersList'),
                     icon: 'pi pi-fw pi-wallet',
-                    to: '/walletOffers'
+                    to: `/${locale}/walletOffers`
                 },
                 // CREATE
                 {
-                    label: 'Create Wallet Offer',
+                    label: t('AppMenu.createWalletOffer'),
                     icon: 'pi pi-fw pi-plus',
-                    to: '/walletOffers/create'
+                    to: `/${locale}/walletOffers/create`
                 }
             ]
         },
         {
-            label: 'UI Management',
+            label: t('AppMenu.uiManagement'),
             icon: 'pi pi-fw pi-cog',
             items: [
                 {
-                    label: 'Sliders',
+                    label: t('AppMenu.sliders'),
                     icon: 'pi pi-fw pi-cog',
-                    to: '/ui/sliders'
+                    to: `/${locale}/ui/sliders`
                 },
                 {
-                    label: 'Add Slider',
+                    label: t('AppMenu.addSlider'),
                     icon: 'pi pi-fw pi-plus',
-                    to: '/ui/sliders/add'
+                    to: `/${locale}/ui/sliders/add`
                 }
             ]
         },
         {
-            label: 'Coupons',
+            label: t('AppMenu.coupons'),
             icon: 'pi pi-fw pi-list',
             items: [
                 {
-                    label: 'Coupons List',
+                    label: t('AppMenu.couponsList'),
                     icon: 'pi pi-fw pi-list',
-                    to: '/coupons'
+                    to: `/${locale}/coupons`
                 },
                 {
-                    label: 'Create Coupon',
+                    label: t('AppMenu.createCoupon'),
                     icon: 'pi pi-fw pi-plus',
-                    to: '/coupons/add'
+                    to: `/${locale}/coupons/add`
                 }
             ]
         },
         {
-            label: 'Reports',
+            label: t('AppMenu.reports'),
             icon: 'pi pi-fw pi-chart-bar',
             items: [
                 {
-                    label: 'Reports List',
+                    label: t('AppMenu.reportsList'),
                     icon: 'pi pi-fw pi-list',
-                    to: '/reports'
+                    to: `/${locale}/reports`
                 },
                 {
-                    label: 'Daily Meals Report',
+                    label: t('AppMenu.dailyMealsReport'),
                     icon: 'pi pi-fw pi-list',
-                    to: '/meals-report'
+                    to: `/${locale}/meals-report`
                 }
             ]
         },
         {
-            label: 'Settings',
+            label: t('AppMenu.settings'),
             items: [
                 {
-                    label: 'LogOut',
+                    label: t('AppMenu.logout'),
                     icon: 'pi pi-sign-out',
-                    to: '/login',
+                    to: `/${locale}/login`,
                     command: () => {
                         // Clear local storage
                         localStorage.clear();
@@ -192,7 +197,7 @@ const AppMenu = () => {
                             document.cookie = c.replace(/^ +/, '').replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
                         });
                         // Redirect to login page
-                        window.location.href = '/login';
+                        window.location.href = `/${locale}/login`;
                     }
                 }
             ]
@@ -201,9 +206,9 @@ const AppMenu = () => {
 
     return (
         <MenuProvider>
-            <ul className="layout-menu">
+            <ul className="layout-menu" style={{ direction: isRTL ? 'rtl' : 'ltr' }}>
                 {model.map((item, i) => {
-                    return !item?.seperator ? <AppMenuitem item={item} root={true} index={i} key={item.label} /> : <li className="menu-separator"></li>;
+                    return !item?.separator ? <AppMenuitem item={item} root={true} index={i} key={item.label} /> : <li className="menu-separator"></li>;
                 })}
             </ul>
         </MenuProvider>

@@ -1,9 +1,13 @@
-'use client'
-import React, { useState, createContext } from 'react';
+'use client';
+import React, { useState, createContext, ReactNode } from 'react';
 import { LayoutState, ChildContainerProps, LayoutConfig, LayoutContextProps } from '../../types/types';
 export const LayoutContext = createContext({} as LayoutContextProps);
 
-export const LayoutProvider = ({ children }: ChildContainerProps) => {
+interface LayoutProviderProps {
+    children: ReactNode;
+}
+
+export const LayoutProvider = ({ children }: LayoutProviderProps) => {
     const [layoutConfig, setLayoutConfig] = useState<LayoutConfig>({
         ripple: false,
         inputStyle: 'outlined',
@@ -11,7 +15,7 @@ export const LayoutProvider = ({ children }: ChildContainerProps) => {
         colorScheme: 'light',
         theme: 'lara-light-indigo',
         scale: 14,
-        language: 'en',
+        language: 'en'
     });
 
     const [layoutState, setLayoutState] = useState<LayoutState>({
