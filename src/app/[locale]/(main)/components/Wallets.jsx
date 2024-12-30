@@ -273,7 +273,7 @@ export default function Wallets({ wallet: serverWallet, id, locale, isRTL }) {
                             <p>{wallet?.clientId?.region}</p>
                         </div>
                         <div className={'col-12 md:col-6'}>
-                            <h5 className={'text-gray-700 uppercase text-md'}>{t('block')}</h5>
+                            <h5 className={'text-gray-700 uppercase text-md'}>{t('buildingblock')}</h5>
                             <p>{wallet?.clientId?.block}</p>
                         </div>
                         <div className={'col-12 md:col-6'}>

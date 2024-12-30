@@ -3,11 +3,12 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { useTranslations } from 'next-intl';
 
-export default function CategoriesNumber({ categories }) {
+export default function CategoriesNumber({ categories, locale }) {
     const t = useTranslations('DashboardHome');
+    const isRTL = locale === 'ar';
 
     return (
-        <DataTable value={categories} style={{ width: '100%' }}>
+        <DataTable value={categories} style={{ width: '100%' }} dir={isRTL ? 'rtl' : 'ltr'}>
             <Column field="name" header={t('name')}></Column>
             <Column
                 field="number"

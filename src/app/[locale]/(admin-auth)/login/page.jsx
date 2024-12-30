@@ -1,51 +1,42 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useContext, useState } from 'react';
-import { useTranslations } from 'next-intl';
-// COMPONENTS
-import AppConfig from '../../../../../layout/AppConfig';
+import React, { useContext, useState, useRef } from 'react';
+import { useTranslations, useLocale } from 'next-intl';
 import { Button } from 'primereact/button';
 import { Password } from 'primereact/password';
 import { LayoutContext } from '../../../../../layout/context/layoutcontext';
 import { InputText } from 'primereact/inputtext';
 import { classNames } from 'primereact/utils';
 import { ProgressSpinner } from 'primereact/progressspinner';
-
-// TOAST
+import Image from 'next/image';
 import { toast } from 'react-hot-toast';
-
-// AXIOS
 import axios from 'axios';
+import styles from './login.module.scss'; // Import the SCSS Module
+import Link from 'next/link'; // Import Link
 
 const LoginPage = ({ params: { locale } }) => {
-    // ROUTER
     const router = useRouter();
-    // STATES
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    // CONTEXT
     const { layoutConfig } = useContext(LayoutContext);
-    // REFS
-    const usernameRef = React.useRef(null);
-    // TRANSLATIONS
+    const usernameRef = useRef(null);
     const t = useTranslations('login');
+    const currentLocale = useLocale();
     const isRTL = locale === 'ar';
 
-    const containerClassName = classNames('surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden', { 'p-input-filled': layoutConfig.inputStyle === 'filled' });
+    const containerClassName = classNames(styles.loginContainer, 'surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden', { 'p-input-filled': layoutConfig.inputStyle === 'filled' });
 
-    async function login(event) {
-        // DISABLE THE PAGE RELOADING
+    const handleLogin = async (event) => {
         event.preventDefault();
-        // VALIDATE USERNAME AND PASSWORD
+
         const usernameRegex = /^[a-zA-Z0-9]+$/;
         const passwordRegex = /^[a-zA-Z0-9]+$/;
 
         if (!usernameRegex.test(username)) {
             toast.error(t('invalidUsername'));
-            // ADD INVALID CLASS TO USERNAME INPUT
-            usernameRef.current.classList.add('p-invalid');
+            usernameRef.current?.classList.add('p-invalid');
             return;
         }
 
@@ -55,92 +46,97 @@ const LoginPage = ({ params: { locale } }) => {
         }
 
         setLoading(true);
-        // LOGIN
-        axios
-            .post(`${process.env.API_URL}/login`, {
-                username: username,
-                password: password
-            })
-            .then((res) => {
-                setLoading(false);
-                // SAVE TOKEN IN LOCAL STORAGE AND COOKIES AND THE ROLE OF THE USER
-                localStorage.setItem('token', res.data.token);
-                localStorage.setItem('role', res.data?.user?.role);
 
-                // SET THE COOKIES
-                document.cookie = `token=${res.data.token}; path=/`;
-                document.cookie = `role=${res.data?.user?.role}; path=/`;
-
-                if (res.data?.user?.role === 'admin') {
-                    // REDIRECT TO HOME PAGE
-                    router.push('/');
-                } else {
-                    toast.error(t('notAuthorized'));
-                }
-            })
-            .catch((err) => {
-                setLoading(false);
-                toast.error(err.response?.data?.message || t('loginFailed'));
+        try {
+            const res = await axios.post(`${process.env.API_URL}/login`, {
+                username,
+                password
             });
-    }
+
+            localStorage.setItem('token', res.data.token);
+            localStorage.setItem('role', res.data?.user?.role);
+            document.cookie = `token=${res.data.token}; path=/`;
+            document.cookie = `role=${res.data?.user?.role}; path=/`;
+
+            console.log(res.data);
+
+            if (res.data?.user?.role === 'admin') {
+                const timer = setTimeout(() => {
+                    clearTimeout(timer);
+                    window.location.href = `/${locale}/`;
+                }, 500);
+            } else {
+                toast.error(t('notAuthorized'));
+            }
+        } catch (err) {
+            toast.error(err.response?.data?.message || t('loginFailed'));
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const switchLocale = (newLocale) => {
+        router.push(`/${newLocale}`);
+    };
 
     return (
         <div className={containerClassName} dir={isRTL ? 'rtl' : 'ltr'}>
-            <div className="flex flex-column align-items-center justify-content-center">
-                <div className="flex gap-1 items-center">
-                    <div className="text-900 text-4xl font-medium mb-4">MUSCLE MAKER</div>
+            <div className={styles.loginCard}>
+                <div className={styles.localeSwitcher}>
+                    {currentLocale === 'en' ? (
+                        <Link href="/ar" onClick={() => switchLocale('ar')} className={styles.localeItem}>
+                            عربي
+                            <label htmlFor="ar">
+                                <Image src={'/ar.svg'} alt={t('arabic')} width={22} height={16} />
+                            </label>
+                        </Link>
+                    ) : (
+                        <Link href="/en" onClick={() => switchLocale('en')} className={styles.localeItem}>
+                            English
+                            <label htmlFor="en">
+                                <Image src={'/en.svg'} alt={t('english')} width={22} height={16} />
+                            </label>
+                        </Link>
+                    )}
                 </div>
-                <div
-                    style={{
-                        borderRadius: '56px',
-                        padding: '0.3rem',
-                        background: 'linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)'
-                    }}
-                >
-                    <div className="w-full surface-card py-8 px-5 sm:px-8" style={{ borderRadius: '53px' }}>
-                        <form onSubmit={login}>
-                            <label htmlFor="username" className="block text-900 text-xl font-medium mb-2">
+                <div className="flex align-items-center justify-content-center mb-4">
+                    <Image src="/logo.png" width={120} height={75} alt="logo" />
+                </div>
+                <div className={styles.formWrapper}>
+                    <form onSubmit={handleLogin} className={styles.form}>
+                        <div className={styles.inputGroup}>
+                            <label htmlFor="username" className={styles.label}>
                                 {t('username')}
                             </label>
-                            <InputText inputid="username" type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder={t('username')} className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} ref={usernameRef} />
+                            <InputText id="username" type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder={t('username')} className={styles.input} ref={usernameRef} />
+                        </div>
 
-                            <label htmlFor="password1" className="block text-900 font-medium text-xl mb-2">
+                        <div className={styles.inputGroup}>
+                            <label htmlFor="password1" className={styles.label}>
                                 {t('password')}
                             </label>
-                            <Password
-                                inputid="password1"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder={t('password')}
-                                toggleMask
-                                className="w-full mb-5"
-                                inputClassName="w-full p-3 md:w-30rem"
-                                feedback={false}
-                            ></Password>
+                            <Password inputStyle={{ width: '100%' }} id="password1" value={password} onChange={(e) => setPassword(e.target.value)} placeholder={t('password')} toggleMask className={styles.input} feedback={false} />
+                        </div>
 
-                            <div className="flex align-items-center justify-content-between mb-5 gap-5"></div>
-                            <Button
-                                style={{
-                                    background: loading ? '#dcdcf1' : 'var(--primary-color)'
-                                }}
-                                label={
-                                    loading ? (
-                                        <ProgressSpinner
-                                            strokeWidth="4"
-                                            style={{
-                                                width: '1.5rem',
-                                                height: '1.5rem'
-                                            }}
-                                        />
-                                    ) : (
-                                        t('login')
-                                    )
-                                }
-                                className="w-full p-3 text-xl"
-                                type={'submit'}
-                            ></Button>
-                        </form>
-                    </div>
+                        <Button
+                            label={
+                                loading ? (
+                                    <ProgressSpinner
+                                        strokeWidth="4"
+                                        style={{
+                                            width: '1.5rem',
+                                            height: '1.5rem'
+                                        }}
+                                    />
+                                ) : (
+                                    t('login')
+                                )
+                            }
+                            className={classNames(styles.loginButton, { 'p-disabled': loading })}
+                            type="submit"
+                            loading={loading}
+                        />
+                    </form>
                 </div>
             </div>
         </div>
@@ -148,11 +144,7 @@ const LoginPage = ({ params: { locale } }) => {
 };
 
 LoginPage.getLayout = function getLayout(page) {
-    return (
-        <React.Fragment>
-            {page}
-            <AppConfig simple />
-        </React.Fragment>
-    );
+    return <React.Fragment>{page}</React.Fragment>;
 };
+
 export default LoginPage;

@@ -62,13 +62,14 @@ export default function Reports({ params: { locale } }) {
                             placeholder={t('reportType')}
                             options={[
                                 { label: t('activeClients'), value: 'active clients' },
-                                { label: t('kitchenMeals'), value: 'kitchenMeals' }
+                                { label: t('kitchenMeals'), value: 'kitchenMeals' },
+                                { label: t('packingList'), value: 'packingList' }
                             ]}
                         />
                     </div>
 
-                    {reportType === 'kitchenMeals' && (
-                        <div className="field col-12 md:col-6">
+                    {(reportType === 'kitchenMeals' || reportType === 'packingList') && (
+                        <div className={`field col-12 md:col-6 ${reportType === 'packingList' ? 'md:col-12' : ''}`}>
                             <label htmlFor="startDate">{t('startDate')}</label>
                             <Calendar
                                 id="startDate"

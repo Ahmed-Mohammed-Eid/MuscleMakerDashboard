@@ -44,6 +44,11 @@ const AppMenu = () => {
                     label: t('AppMenu.createPackage'),
                     icon: 'pi pi-fw pi-plus',
                     to: `/${locale}/packages/create`
+                },
+                {
+                    label: t('AppMenu.flexBundle'),
+                    icon: 'pi pi-fw pi-cog',
+                    to: `/${locale}/packages/flex-bundle`
                 }
             ]
         },
@@ -103,6 +108,11 @@ const AppMenu = () => {
                     label: t('AppMenu.usersList'),
                     icon: 'pi pi-fw pi-list',
                     to: `/${locale}/users`
+                },
+                {
+                    label: t('AppMenu.createUser'),
+                    icon: 'pi pi-fw pi-plus',
+                    to: `/${locale}/users/create/client`
                 }
             ]
         },
