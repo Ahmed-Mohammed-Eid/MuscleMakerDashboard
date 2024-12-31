@@ -18,6 +18,7 @@
         "fluentUI": "Fluent UI",
         "primeOneDesign2022": "PrimeOne Design - 2022",
         "primeOneDesign2021": "PrimeOne Design - 2021",
+        "muscleMaker": "Muscle Maker",
 
         "bootstrapLightBlue": "Bootstrap Light Blue",
         "bootstrapLightPurple": "Bootstrap Light Purple",
@@ -834,7 +835,9 @@
                 "hasCoupon": "Have a Coupon?",
                 "couponCode": "Coupon Code",
                 "couponPlaceholder": "Enter coupon code",
-                "selectPeriod": "Select Period"
+                "selectPeriod": "Select Period",
+                "selectStartDate": "Select Start Date",
+                "selectBundle": "Select Bundle"
             },
             "newSubscription": {
                 "title": "New Subscription",

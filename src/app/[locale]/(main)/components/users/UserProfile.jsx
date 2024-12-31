@@ -604,7 +604,7 @@ export default function UserProfile({ id, locale }) {
                         <label htmlFor="startingAt" className="font-medium mb-2 block">
                             {t('dialogs.renew.startDate')}
                         </label>
-                        <Calendar id="startingAt" value={renewForm.startingAt} onChange={(e) => setRenewForm({ ...renewForm, startingAt: e.value })} showIcon className="w-full" minDate={new Date()} />
+                        <Calendar id="startingAt" placeholder={t('dialogs.renew.selectStartDate')} value={renewForm.startingAt} onChange={(e) => setRenewForm({ ...renewForm, startingAt: e.value })} showIcon className="w-full" minDate={new Date()} />
                     </div>
 
                     <div className="field">
@@ -618,6 +618,7 @@ export default function UserProfile({ id, locale }) {
                                 label: isRTL ? bundle.bundleName : bundle.bundleNameEn,
                                 value: bundle._id
                             }))}
+                            placeholder={t('dialogs.renew.selectBundle')}
                             onChange={(e) => setRenewForm({ ...renewForm, bundleId: e.value, bundlePeriod: '' })}
                             disabled={renewType === 'same'}
                             className="w-full"
@@ -667,27 +668,6 @@ export default function UserProfile({ id, locale }) {
                                 {t('dialogs.renew.couponCode')}
                             </label>
                             <InputText id="couponCode" value={renewForm.couponCode} onChange={(e) => setRenewForm({ ...renewForm, couponCode: e.target.value })} className="w-full" />
-                        </div>
-                    )}
-
-                    {/* Show current bundle details when renewing same package */}
-                    {renewType === 'same' && (
-                        <div className="surface-100 border-round p-3">
-                            <h3 className="text-lg font-medium mt-0 mb-3">{t('dialogs.renew.currentPackage')}</h3>
-                            <div className="flex flex-column gap-2">
-                                <p className="m-0">
-                                    <span className="font-medium">{t('dialogs.renew.bundleName')}:</span> {isRTL ? userData?.subscripedBundle?.bundleId?.bundleName : userData?.subscripedBundle?.bundleId?.bundleNameEn}
-                                </p>
-                                <p className="m-0">
-                                    <span className="font-medium">{t('dialogs.renew.currentPeriod')}:</span> {userData?.subscripedBundle?.bundlePeriod}
-                                </p>
-                                <p className="m-0">
-                                    <span className="font-medium">{t('info.protein')}:</span> {userData?.subscripedBundle?.bundleId?.protine} {t('info.grams')}
-                                </p>
-                                <p className="m-0">
-                                    <span className="font-medium">{t('info.carbs')}:</span> {userData?.subscripedBundle?.bundleId?.carb} {t('info.grams')}
-                                </p>
-                            </div>
                         </div>
                     )}
                 </div>

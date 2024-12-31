@@ -200,6 +200,8 @@ a[href='/ar/login'],
 a[href='/en/login'] {
     color: #ff0000 !important;
     text-decoration: none !important;
+    font-weight: bold;
+    font-size: 1rem;
 }
 
 .__btn {

@@ -13,7 +13,7 @@ export const LayoutProvider = ({ children }: LayoutProviderProps) => {
         inputStyle: 'outlined',
         menuMode: 'static',
         colorScheme: 'light',
-        theme: 'lara-light-indigo',
+        theme: 'lara-light-muscle-maker',
         scale: 14,
         language: 'en'
     });
