@@ -10,6 +10,7 @@ import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { TabMenu } from 'primereact/tabmenu';
 import { Dropdown } from 'primereact/dropdown';
+import { InputText } from 'primereact/inputtext';
 // TOAST
 import { toast } from 'react-hot-toast';
 
@@ -29,6 +30,8 @@ export default function UsersTable({ locale, isRTL }) {
     const [hasNextPage, setHasNextPage] = useState(false);
     // STATE
     const [activeTab, setActiveTab] = useState('clients');
+    // SEARCH STATE
+    const [search, setSearch] = useState('');
 
     // GET THE EMPLOYEES FROM THE API
     function getEmployees() {
@@ -306,6 +309,11 @@ export default function UsersTable({ locale, isRTL }) {
                 </div>
             )}
 
+            {/* GLOBALE SEARCH BAR */}
+            <div className="w-full inline-block">
+                <InputText placeholder={t('search')} onChange={(e) => setSearch(e.target.value)} />
+            </div>
+
             <TabMenu
                 dir={isRTL ? 'rtl' : 'ltr'}
                 model={[
@@ -331,6 +339,9 @@ export default function UsersTable({ locale, isRTL }) {
                     rowsPerPageOptions={[5, 10, 20, 25, 30, 40, 50]}
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     emptyMessage={t('noUsersFound')}
+                    globalFilter={search}
+                    globalFilterFields={['fullName', 'username', 'phoneNumber', 'address']}
+                    onGlobalFilterChange={(e) => setSearch(e.value)}
                 >
                     <Column
                         field="userImage"
@@ -430,6 +441,9 @@ export default function UsersTable({ locale, isRTL }) {
                     rowsPerPageOptions={[5, 10, 20, 25, 30, 40, 50]}
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     emptyMessage={t('noUsersFound')}
+                    globalFilter={search}
+                    globalFilterFields={['clientName', 'phoneNumber']}
+                    onGlobalFilterChange={(e) => setSearch(e.value)}
                 >
                     <Column field="subscriptionId" header={t('membershipId')} sortable filter />
                     <Column field="clientName" header={t('name')} sortable filter />

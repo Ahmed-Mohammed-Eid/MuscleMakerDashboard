@@ -72,9 +72,12 @@
         "chefMenu": "قائمة الطاهي",
         "dayBoxesList": "قائمة صناديق اليوم",
         "createDayBox": "إنشاء صندوق يوم",
-        "users": "المستخدمين",
-        "usersList": "قائمة المستخدمين",
-        "createUser": "إنشاء مستخدم",
+        "users": "العملاء",
+        "usersList": "قائمة العملاء",
+        "createUser": "إنشاء عميل",
+        "employees": "الموظفين",
+        "employeesList": "قائمة الموظفين",
+        "createEmployee": "إنشاء موظف",
         "branches": "الفروع",
         "branchesList": "قائمة الفروع",
         "walletOffers": "عروض المحفظة",
@@ -497,7 +500,8 @@
         "errorDeletingEmployee": "حدث خطأ أثناء حذف الموظف",
         "errorDeletingClient": "حدث خطأ أثناء حذف العميل",
         "errorGettingUsers": "حدث خطأ أثناء جلب المستخدمين",
-        "usernameCopied": "تم نسخ اسم المستخدم"
+        "usernameCopied": "تم نسخ اسم المستخدم",
+        "search": "البحث"
     },
     "userWallets": {
         "walletActions": "إجراءات المحفظة",
@@ -809,7 +813,26 @@
             "renew": {
                 "title": "تجديد الاشتراك",
                 "startDate": "تاريخ البدء",
-                "packageDetails": "تفاصيل الباقة"
+                "packageDetails": "تفاصيل الباقة",
+                "bundle": "الباقة",
+                "period": "الفترة",
+                "fillAllFields": "يرجى ملء جميع الحقول المطلوبة",
+                "success": "تم تجديد الاشتراك بنجاح",
+                "error": "فشل في تجديد الاشتراك",
+                "requirePayment": "يجب الدفع قبل البدء",
+                "hasCoupon": "لديك كوبون؟",
+                "couponCode": "رمز الكوبون",
+                "couponPlaceholder": "أدخل رمز الكوبون",
+                "hasCouponLabel": "لديك كوبون؟",
+                "couponLabel": "رمز الكوبون",
+                "currentPackage": "تفاصيل الباقة الحالية",
+                "currentPeriod": "الفترة الحالية",
+                "bundleName": "اسم الباقة",
+                "protein": "البروتين",
+                "carbs": "الكربوهيدرات",
+                "samePackage": "نفس الباقة",
+                "newPackage": "باقة جديدة",
+                "selectPeriod": "اختر الفترة"
             },
             "newSubscription": {
                 "title": "اشتراك جديد",
@@ -839,6 +862,20 @@
                 "apartment": "الشقة",
                 "protein": "البروتين (جرام)",
                 "carbs": "الكربوهيدرات (جرام)"
+            },
+            "unsubscribe": {
+                "header": "إلغاء الاشتراك",
+                "message": "هل أنت متأكد أنك تريد إلغاء الاشتراك؟",
+                "success": "تم إلغاء الاشتراك بنجاح",
+                "error": "فشل في إلغاء الاشتراك",
+                "cancelled": "تم إلغاء الاشتراك"
+            },
+            "delete": {
+                "header": "حذف المستخدم",
+                "message": "هل أنت متأكد أنك تريد حذف هذا المستخدم؟",
+                "success": "تم حذف المستخدم بنجاح",
+                "error": "فشل في حذف المستخدم",
+                "cancelled": "تم حذف المستخدم"
             }
         },
         "actions": {
@@ -850,8 +887,7 @@
             "wallet": "المحفظة",
             "paymentHistory": "سجل المدفوعات",
             "modifyDays": "تعديل أيام الاشتراك",
-            "newSubscription": "الاشتراك في باقة جديدة",
-            "renewPackage": "تجديد نفس الباقة",
+            "renewPackage": "تجديد الباقة",
             "save": "حفظ التغييرات",
             "cancel": "إلغاء",
             "apply": "تطبيق التغييرات"
@@ -953,6 +989,7 @@
         "hasCouponLabel": "لديك كوبون؟",
         "couponLabel": "رمز الكوبون",
         "couponPlaceholder": "أدخل رمز الكوبون",
+        "requirePaymentLabel": "يجب الدفع قبل البدء",
         "submitButton": "إنشاء العميل",
         "fillRequiredFieldsError": "يرجى ملء جميع الحقول المطلوبة",
         "createSuccess": "تم إنشاء العميل بنجاح",

@@ -63,7 +63,8 @@ export default function CreateClient({ params: { locale } }) {
     const [options, setOptions] = useState({
         bundleType: 'normal', // normal or custom
         hasDislikedMeals: false,
-        hasCoupon: false
+        hasCoupon: false,
+        requirePayment: false
     });
 
     // Fetch bundles and flex bundle options on component mount
@@ -135,7 +136,8 @@ export default function CreateClient({ params: { locale } }) {
             dislikedMeals: options.hasDislikedMeals ? form.dislikedMeals : '',
             password: form.password,
             startingAt: form.startingAt ? form.startingAt.toLocaleDateString('en-US') : null,
-            customBundle: options.bundleType === 'custom'
+            customBundle: options.bundleType === 'custom',
+            requirePayment: options.requirePayment
         };
 
         // Add bundle related fields based on bundle type
@@ -202,6 +204,13 @@ export default function CreateClient({ params: { locale } }) {
                     </div>
                 </div>
                 <div className="flex gap-4">
+                    <div className="flex align-items-center">
+                        <Checkbox inputId="requirePayment" name="requirePayment" onChange={(e) => setOptions({ ...options, requirePayment: e.checked })} checked={options.requirePayment} />
+                        <label htmlFor="requirePayment" className={`${isRTL ? 'mr-2' : 'ml-2'} font-medium inline-block`}>
+                            {t('requirePaymentLabel')}
+                        </label>
+                    </div>
+
                     <div className="flex align-items-center">
                         <Checkbox inputId="hasDislikedMeals" name="hasDislikedMeals" onChange={(e) => setOptions({ ...options, hasDislikedMeals: e.checked })} checked={options.hasDislikedMeals} />
                         <label htmlFor="hasDislikedMeals" className={`${isRTL ? 'mr-2' : 'ml-2'} font-medium inline-block`}>

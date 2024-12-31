@@ -72,9 +72,12 @@
         "chefMenu": "Chef Menu",
         "dayBoxesList": "Day Boxes List",
         "createDayBox": "Create Day Box",
-        "users": "Users",
-        "usersList": "Users List",
-        "createUser": "Create User",
+        "users": "Clients",
+        "usersList": "Clients List",
+        "createUser": "Create Client",
+        "employees": "Employees",
+        "employeesList": "Employees List",
+        "createEmployee": "Create Employee",
         "branches": "Branches",
         "branchesList": "Branches List",
         "walletOffers": "Wallet Offers",
@@ -447,7 +450,8 @@
         "errorDeletingEmployee": "Error deleting employee",
         "errorDeletingClient": "Error deleting client",
         "errorGettingUsers": "Error getting users",
-        "usernameCopied": "Username copied"
+        "usernameCopied": "Username copied",
+        "search": "Search"
     },
     "userWallets": {
         "walletActions": "Wallet Actions",
@@ -727,6 +731,7 @@
         "hasCouponLabel": "Have a Coupon?",
         "couponLabel": "Coupon Code",
         "couponPlaceholder": "Enter coupon code",
+        "requirePaymentLabel": "Require Payment",
         "submitButton": "Create Client",
         "fillRequiredFieldsError": "Please fill in all required fields",
         "createSuccess": "Client created successfully",
@@ -819,7 +824,17 @@
             "renew": {
                 "title": "Renew Subscription",
                 "startDate": "Start Date",
-                "packageDetails": "Package Details"
+                "packageDetails": "Package Details",
+                "bundle": "Bundle",
+                "period": "Period",
+                "fillAllFields": "Please fill all required fields",
+                "success": "Subscription renewed successfully",
+                "error": "Failed to renew subscription",
+                "requirePayment": "Payment is required before starting",
+                "hasCoupon": "Have a Coupon?",
+                "couponCode": "Coupon Code",
+                "couponPlaceholder": "Enter coupon code",
+                "selectPeriod": "Select Period"
             },
             "newSubscription": {
                 "title": "New Subscription",
@@ -849,6 +864,20 @@
                 "apartment": "Apartment",
                 "protein": "Protein (grams)",
                 "carbs": "Carbohydrates (grams)"
+            },
+            "unsubscribe": {
+                "header": "Unsubscribe Client",
+                "message": "Are you sure you want to unsubscribe this client?",
+                "success": "Client unsubscribed successfully",
+                "error": "Failed to unsubscribe client",
+                "cancelled": "Client unsubscribed successfully"
+            },
+            "delete": {
+                "header": "Delete User",
+                "message": "Are you sure you want to delete this user?",
+                "success": "User deleted successfully",
+                "error": "Failed to delete user",
+                "cancelled": "User deleted successfully"
             }
         },
         "actions": {
@@ -860,8 +889,7 @@
             "wallet": "Wallet",
             "paymentHistory": "Payment History",
             "modifyDays": "Modify Subscription Days",
-            "newSubscription": "Subscribe to New Package",
-            "renewPackage": "Renew Same Package",
+            "renewPackage": "Renew Package",
             "save": "Save Changes",
             "cancel": "Cancel",
             "apply": "Apply Changes"

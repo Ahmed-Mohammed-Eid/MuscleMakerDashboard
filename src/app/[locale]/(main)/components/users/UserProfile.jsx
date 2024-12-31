@@ -14,6 +14,8 @@ import { Sidebar } from 'primereact/sidebar';
 import { Dropdown } from 'primereact/dropdown';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import { Checkbox } from 'primereact/checkbox';
+import { RadioButton } from 'primereact/radiobutton';
 
 export default function UserProfile({ id, locale }) {
     // ROUTER
@@ -25,7 +27,6 @@ export default function UserProfile({ id, locale }) {
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showRenewDialog, setShowRenewDialog] = useState(false);
-    const [showNewSubscriptionDialog, setShowNewSubscriptionDialog] = useState(false);
     const [showFreezeDialog, setShowFreezeDialog] = useState(false);
     const [showUnfreezeDialog, setShowUnfreezeDialog] = useState(false);
     const [renewalDate, setRenewalDate] = useState(null);
@@ -53,6 +54,16 @@ export default function UserProfile({ id, locale }) {
         numberOfDays: 1,
         action: 'add'
     });
+    const [bundles, setBundles] = useState([]);
+    const [renewForm, setRenewForm] = useState({
+        bundleId: '',
+        bundlePeriod: '',
+        hasCoupon: false,
+        couponCode: '',
+        requirePayment: false,
+        startingAt: null
+    });
+    const [renewType, setRenewType] = useState('same'); // 'same' or 'new'
 
     // get user data handler
     const getUserData = async () => {
@@ -169,19 +180,6 @@ export default function UserProfile({ id, locale }) {
         </div>
     );
 
-    const confirmUnfreeze = () => {
-        confirmDialog({
-            message: 'Are you sure you want to unfreeze this subscription?',
-            header: 'Unfreeze Confirmation',
-            icon: 'pi pi-info-circle',
-            acceptClassName: 'p-button-success',
-            accept: handleUnfreeze,
-            reject: () => {
-                toast.success('Subscription unfreeze cancelled');
-            }
-        });
-    };
-
     const handleDelete = async () => {
         const token = localStorage.getItem('token');
 
@@ -263,43 +261,74 @@ export default function UserProfile({ id, locale }) {
         </div>
     );
 
-    const handleRenew = async () => {
+    const handleRenew = () => {
+        // Set initial values when opening the dialog
+        const currentBundle = userData?.clientData?.subscripedBundle;
+
+        setRenewType('same'); // Default to renewing same package
+        setRenewForm({
+            bundleId: currentBundle?.bundleId?._id || '',
+            bundlePeriod: currentBundle?.bundlePeriod || '',
+            hasCoupon: false,
+            couponCode: '',
+            requirePayment: false,
+            startingAt: null
+        });
         setShowRenewDialog(true);
     };
 
-    const handleNewSubscription = () => {
-        setShowNewSubscriptionDialog(true);
+    const handleRenewSubmit = async () => {
+        if (!renewForm.bundleId || !renewForm.bundlePeriod || !renewForm.startingAt) {
+            toast.error(t('dialogs.renew.fillAllFields', 'Please fill all required fields'));
+            return;
+        }
+
+        const token = localStorage.getItem('token');
+
+        try {
+            const formattedDate = renewForm.startingAt
+                .toLocaleDateString('en-US', {
+                    month: 'numeric',
+                    day: 'numeric',
+                    year: 'numeric'
+                })
+                .replace(/\//g, '-');
+
+            const response = await axios.post(
+                `${process.env.API_URL}/renew/subscription`,
+                {
+                    clientId: id,
+                    bundleId: renewForm.bundleId,
+                    bundlePeriod: renewForm.bundlePeriod,
+                    hasCoupon: renewForm.hasCoupon,
+                    couponCode: renewForm.couponCode,
+                    requirePayment: renewForm.requirePayment,
+                    startingAt: formattedDate
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            if (response.data.success) {
+                toast.success(t('dialogs.renew.success', 'Subscription renewed successfully'));
+                setShowRenewDialog(false);
+                getUserData(); // Refresh user data
+            } else {
+                toast.error(response.data.message || t('dialogs.renew.error', 'Failed to renew subscription'));
+            }
+        } catch (error) {
+            console.error('Renew error:', error);
+            toast.error(error.response?.data?.message || t('dialogs.renew.error', 'Failed to renew subscription'));
+        }
     };
 
     const renewDialogFooter = (
         <div className="flex justify-content-end gap-2">
             <Button label={t('actions.cancel')} icon="pi pi-times" onClick={() => setShowRenewDialog(false)} className="p-button-outlined flex-1" />
-            <Button
-                label={t('actions.renewPackage')}
-                icon="pi pi-check"
-                onClick={() => {
-                    setShowRenewDialog(false);
-                    toast.success(t('dialogs.renew.success', 'Subscription renewed successfully'));
-                }}
-                autoFocus
-                className="flex-1"
-            />
-        </div>
-    );
-
-    const newSubscriptionDialogFooter = (
-        <div className="flex justify-content-end gap-2">
-            <Button label={t('actions.cancel')} icon="pi pi-times" onClick={() => setShowNewSubscriptionDialog(false)} className="p-button-outlined flex-1" />
-            <Button
-                label={t('actions.newSubscription')}
-                icon="pi pi-check"
-                onClick={() => {
-                    setShowNewSubscriptionDialog(false);
-                    toast.success(t('dialogs.newSubscription.success', 'New subscription created successfully'));
-                }}
-                autoFocus
-                className="flex-1"
-            />
+            <Button label={t('actions.renewPackage')} icon="pi pi-check" onClick={handleRenewSubmit} autoFocus className="flex-1" />
         </div>
     );
 
@@ -441,6 +470,23 @@ export default function UserProfile({ id, locale }) {
         </div>
     );
 
+    // Fetch bundles on component mount
+    useEffect(() => {
+        const fetchBundles = async () => {
+            const token = localStorage.getItem('token');
+            try {
+                const response = await axios.get(`${process.env.API_URL}/get/bundles`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                setBundles(response.data?.bundles || []);
+            } catch (error) {
+                console.error('Error fetching bundles:', error);
+                toast.error(error?.response?.data?.message || 'Failed to fetch bundles');
+            }
+        };
+        fetchBundles();
+    }, []);
+
     if (loading || !userData) {
         return (
             <div className="flex justify-content-center align-items-center" style={{ height: '70vh' }}>
@@ -507,49 +553,143 @@ export default function UserProfile({ id, locale }) {
             </Dialog>
 
             {/* Renew Dialog */}
-            <Dialog header={t('dialogs.renew.title')} visible={showRenewDialog} style={{ width: '450px' }} dir={isRTL ? 'rtl' : 'ltr'} modal footer={renewDialogFooter} onHide={() => setShowRenewDialog(false)} className="p-fluid">
+            <Dialog header={t('dialogs.renew.title')} visible={showRenewDialog} style={{ width: '500px' }} modal footer={renewDialogFooter} onHide={() => setShowRenewDialog(false)} className="p-fluid" dir={isRTL ? 'rtl' : 'ltr'}>
                 <div className="flex flex-column gap-4 pt-4">
                     <div className="field">
-                        <label htmlFor="startDate" className="font-medium mb-2 block">
-                            {t('dialogs.renew.startDate')}
-                        </label>
-                        <Calendar id="startDate" value={renewalDate} onChange={(e) => setRenewalDate(e.value)} showIcon className="w-full" minDate={new Date()} />
-                    </div>
-                    <div className="field">
-                        <label className="font-medium mb-2 block">{t('dialogs.renew.packageDetails')}</label>
-                        <div className="p-3 surface-100 border-round">
-                            <p className="font-medium mb-2">{locale === 'ar' ? bundleName : bundleNameEn}</p>
-                            <div className="flex justify-content-between text-sm">
-                                <span>
-                                    {t('info.protein')}: {clientData.protine}
-                                    {t('info.grams')}
-                                </span>
-                                <span>
-                                    {t('info.carbs')}: {clientData.carb}
-                                    {t('info.grams')}
-                                </span>
+                        <div className="flex gap-3 mb-4">
+                            <div className="field-radiobutton flex-1">
+                                <RadioButton
+                                    inputId="samePackage"
+                                    name="renewType"
+                                    value="same"
+                                    onChange={(e) => {
+                                        setRenewType(e.value);
+                                        const currentBundle = userData?.clientData?.subscripedBundle;
+                                        console.log(currentBundle);
+                                        setRenewForm((prev) => ({
+                                            ...prev,
+                                            bundleId: currentBundle?.bundleId?._id || '',
+                                            bundlePeriod: currentBundle?.bundlePeriod || ''
+                                        }));
+                                    }}
+                                    checked={renewType === 'same'}
+                                />
+                                <label htmlFor="samePackage" className={`${isRTL ? 'mr-2' : 'ml-2'}`}>
+                                    {t('dialogs.renew.samePackage')}
+                                </label>
+                            </div>
+                            <div className="field-radiobutton flex-1">
+                                <RadioButton
+                                    inputId="newPackage"
+                                    name="renewType"
+                                    value="new"
+                                    onChange={(e) => {
+                                        setRenewType(e.value);
+                                        setRenewForm((prev) => ({
+                                            ...prev,
+                                            bundleId: '',
+                                            bundlePeriod: ''
+                                        }));
+                                    }}
+                                    checked={renewType === 'new'}
+                                />
+                                <label htmlFor="newPackage" className={`${isRTL ? 'mr-2' : 'ml-2'}`}>
+                                    {t('dialogs.renew.newPackage')}
+                                </label>
                             </div>
                         </div>
                     </div>
-                </div>
-            </Dialog>
 
-            {/* New Subscription Dialog */}
-            <Dialog
-                header={t('dialogs.newSubscription.title')}
-                visible={showNewSubscriptionDialog}
-                dir={isRTL ? 'rtl' : 'ltr'}
-                style={{ width: '450px' }}
-                modal
-                footer={newSubscriptionDialogFooter}
-                onHide={() => setShowNewSubscriptionDialog(false)}
-                className="p-fluid"
-            >
-                <div className="flex flex-column gap-4 pt-4">
-                    <p className="text-600">
-                        {t('dialogs.newSubscription.selectPackage')} {clientData.clientName}
-                    </p>
-                    {/* Add package selection UI here */}
+                    <div className="field">
+                        <label htmlFor="startingAt" className="font-medium mb-2 block">
+                            {t('dialogs.renew.startDate')}
+                        </label>
+                        <Calendar id="startingAt" value={renewForm.startingAt} onChange={(e) => setRenewForm({ ...renewForm, startingAt: e.value })} showIcon className="w-full" minDate={new Date()} />
+                    </div>
+
+                    <div className="field">
+                        <label htmlFor="bundleId" className="font-medium mb-2 block">
+                            {t('dialogs.renew.bundle')}
+                        </label>
+                        <Dropdown
+                            id="bundleId"
+                            value={renewForm.bundleId}
+                            options={bundles.map((bundle) => ({
+                                label: isRTL ? bundle.bundleName : bundle.bundleNameEn,
+                                value: bundle._id
+                            }))}
+                            onChange={(e) => setRenewForm({ ...renewForm, bundleId: e.value, bundlePeriod: '' })}
+                            disabled={renewType === 'same'}
+                            className="w-full"
+                        />
+                    </div>
+
+                    <div className="field">
+                        <label htmlFor="bundlePeriod" className="font-medium mb-2 block">
+                            {t('dialogs.renew.period')}
+                        </label>
+                        <Dropdown
+                            id="bundlePeriod"
+                            value={renewForm.bundlePeriod}
+                            options={
+                                renewForm?.bundleId
+                                    ? bundles
+                                          ?.find((bundle) => bundle?._id === renewForm?.bundleId)
+                                          ?.periodPrices.map((pp) => ({
+                                              label: `${pp.period} - ${pp.price} KWD`,
+                                              value: pp.period
+                                          }))
+                                    : []
+                            }
+                            onChange={(e) => setRenewForm({ ...renewForm, bundlePeriod: e.value })}
+                            placeholder={t('dialogs.renew.selectPeriod')}
+                            className="w-full"
+                        />
+                    </div>
+
+                    <div className="field-checkbox">
+                        <Checkbox inputId="requirePayment" checked={renewForm.requirePayment} onChange={(e) => setRenewForm({ ...renewForm, requirePayment: e.checked })} />
+                        <label htmlFor="requirePayment" className={`${isRTL ? 'mr-2' : 'ml-2'} font-medium`}>
+                            {t('dialogs.renew.requirePayment')}
+                        </label>
+                    </div>
+
+                    <div className="field-checkbox">
+                        <Checkbox inputId="hasCoupon" checked={renewForm.hasCoupon} onChange={(e) => setRenewForm({ ...renewForm, hasCoupon: e.checked })} />
+                        <label htmlFor="hasCoupon" className={`${isRTL ? 'mr-2' : 'ml-2'} font-medium`}>
+                            {t('dialogs.renew.hasCoupon')}
+                        </label>
+                    </div>
+
+                    {renewForm.hasCoupon && (
+                        <div className="field">
+                            <label htmlFor="couponCode" className="font-medium mb-2 block">
+                                {t('dialogs.renew.couponCode')}
+                            </label>
+                            <InputText id="couponCode" value={renewForm.couponCode} onChange={(e) => setRenewForm({ ...renewForm, couponCode: e.target.value })} className="w-full" />
+                        </div>
+                    )}
+
+                    {/* Show current bundle details when renewing same package */}
+                    {renewType === 'same' && (
+                        <div className="surface-100 border-round p-3">
+                            <h3 className="text-lg font-medium mt-0 mb-3">{t('dialogs.renew.currentPackage')}</h3>
+                            <div className="flex flex-column gap-2">
+                                <p className="m-0">
+                                    <span className="font-medium">{t('dialogs.renew.bundleName')}:</span> {isRTL ? userData?.subscripedBundle?.bundleId?.bundleName : userData?.subscripedBundle?.bundleId?.bundleNameEn}
+                                </p>
+                                <p className="m-0">
+                                    <span className="font-medium">{t('dialogs.renew.currentPeriod')}:</span> {userData?.subscripedBundle?.bundlePeriod}
+                                </p>
+                                <p className="m-0">
+                                    <span className="font-medium">{t('info.protein')}:</span> {userData?.subscripedBundle?.bundleId?.protine} {t('info.grams')}
+                                </p>
+                                <p className="m-0">
+                                    <span className="font-medium">{t('info.carbs')}:</span> {userData?.subscripedBundle?.bundleId?.carb} {t('info.grams')}
+                                </p>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </Dialog>
 
@@ -735,7 +875,6 @@ export default function UserProfile({ id, locale }) {
                             <Button icon="pi pi-history" severity="info" onClick={getPaymentHistory} tooltip={t('actions.paymentHistory')} className="p-button-rounded p-button-outlined" />
                         </div>
                         <div className="flex gap-2">
-                            <Button label={t('actions.newSubscription')} icon="pi pi-plus" severity="help" onClick={handleNewSubscription} className="p-button-outlined" />
                             <Button label={t('actions.renewPackage')} icon="pi pi-refresh" onClick={handleRenew} className="p-button-outlined" />
                         </div>
                     </div>
@@ -807,14 +946,14 @@ export default function UserProfile({ id, locale }) {
                         </div>
                         <div className="mb-4 p-3 surface-50 border-round">
                             <p className="text-600 mb-2 text-sm">{t('info.bundleName')}</p>
-                            <p className="text-900 font-medium text-xl">{locale === 'ar' ? bundleName : bundleNameEn}</p>
+                            <p className="text-900 font-medium text-xl">{locale === 'ar' ? userData?.clientData?.subscripedBundle?.bundleId?.bundleName : userData?.clientData?.subscripedBundle?.bundleId?.bundleNameEn}</p>
                         </div>
                         <div className="mb-4">
                             <p className="text-600 mb-2 text-sm">{t('info.duration')}</p>
                             <div className="flex gap-2 align-items-center">
                                 <i className={`pi pi-calendar-range text-primary`}></i>
                                 <p className={`text-900 m-0 ${isRTL ? 'text-right' : 'text-left'}`}>
-                                    {formatDate(startDate)} - {formatDate(endDate)}
+                                    {formatDate(userData?.clientData?.subscripedBundle?.startingDate)} - {formatDate(userData?.clientData?.subscripedBundle?.endingDate)}
                                 </p>
                             </div>
                         </div>
