@@ -526,7 +526,7 @@ export default function CreateClient({ params: { locale } }) {
                                         <MultiSelect
                                             value={form.bundleOptions.mealsType}
                                             options={flexBundleOptions?.mealsType.map((type) => ({
-                                                label: `${isRTL ? type.mealType : type.mealTypeEn} - ${type.price} KWD`,
+                                                label: `${type.mealType} - ${type.price} KWD`,
                                                 value: type
                                             }))}
                                             onChange={(e) => {
