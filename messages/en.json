@@ -283,6 +283,7 @@
         "reportType": "Report Type",
         "activeClients": "Active Clients",
         "packingList": "Packing List",
+        "couponHistory": "Coupons History Report",
         "kitchenMeals": "Kitchen Meals",
         "startDate": "Start Date",
         "endDate": "End Date",

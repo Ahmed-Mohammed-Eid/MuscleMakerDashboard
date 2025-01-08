@@ -63,12 +63,13 @@ export default function Reports({ params: { locale } }) {
                             options={[
                                 { label: t('activeClients'), value: 'active clients' },
                                 { label: t('kitchenMeals'), value: 'kitchenMeals' },
-                                { label: t('packingList'), value: 'packingList' }
+                                { label: t('packingList'), value: 'packingList' },
+                                { label: t('couponHistory'), value: 'couponHistory' }
                             ]}
                         />
                     </div>
 
-                    {(reportType === 'kitchenMeals' || reportType === 'packingList') && (
+                    {(reportType === 'kitchenMeals' || reportType === 'packingList' || reportType === 'couponHistory') && (
                         <div className={`field col-12 md:col-6 ${reportType === 'packingList' ? 'md:col-12' : ''}`}>
                             <label htmlFor="startDate">{t('startDate')}</label>
                             <Calendar
@@ -84,7 +85,7 @@ export default function Reports({ params: { locale } }) {
                         </div>
                     )}
 
-                    {reportType === 'kitchenMeals' && (
+                    {(reportType === 'kitchenMeals' || reportType === 'couponHistory') && (
                         <div className="field col-12 md:col-6">
                             <label htmlFor="endDate">{t('endDate')}</label>
                             <Calendar

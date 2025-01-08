@@ -735,6 +735,7 @@
         "reportType": "نوع التقرير",
         "activeClients": "العملاء النشطين",
         "packingList": " الوجبات المغلفة",
+        "couponHistory": "تقرير أكواد الخصم",
         "kitchenMeals": "وجبات المطبخ",
         "startDate": "تاريخ البدء",
         "endDate": "تاريخ الانتهاء",
