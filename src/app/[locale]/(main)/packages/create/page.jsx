@@ -41,7 +41,10 @@ export default function CreatePackage({ params: { locale } }) {
         fridayPrice: '',
         breakfast: false,
         lunch: false,
-        dinner: false
+        dinner: false,
+        allowedBreakfast: null,
+        allowedLunch: null,
+        allowedDinner: null
     });
 
     // HANDLERS
@@ -84,6 +87,11 @@ export default function CreatePackage({ params: { locale } }) {
         formData.append('dinner', form.dinner);
         formData.append('periodPrices', JSON.stringify(prices));
         formData.append('fridayPrice', form.fridayPrice || 0);
+
+        // ALLOWED MEALS COUNT
+        formData.append('allowedBreakfast', form.allowedBreakfast ? form.allowedBreakfast : 0);
+        formData.append('allowedLunch', form.allowedLunch ? form.allowedLunch : 0);
+        formData.append('allowedDinner', form.allowedDinner ? form.allowedDinner : 0);
 
         // SEND THE REQUEST
         axios
@@ -384,6 +392,49 @@ export default function CreatePackage({ params: { locale } }) {
                             />
                         </div>
                     )}
+
+                    <div className="field col-4">
+                        <label htmlFor="allowedBreakfast">{t('allowedBreakfast')}</label>
+                        <InputNumber
+                            id="allowedBreakfast"
+                            placeholder={t('enterAllowedBreakfast')}
+                            mode="decimal"
+                            minFractionDigits={0}
+                            maxFractionDigits={0}
+                            min={0}
+                            max={100}
+                            value={form.allowedBreakfast}
+                            onChange={(e) => setForm({ ...form, allowedBreakfast: e.value })}
+                        />
+                    </div>
+                    <div className="field col-4">
+                        <label htmlFor="allowedLunch">{t('allowedLunch')}</label>
+                        <InputNumber
+                            id="allowedLunch"
+                            placeholder={t('enterAllowedLunch')}
+                            mode="decimal"
+                            minFractionDigits={0}
+                            maxFractionDigits={0}
+                            min={0}
+                            max={100}
+                            value={form.allowedLunch}
+                            onChange={(e) => setForm({ ...form, allowedLunch: e.value })}
+                        />
+                    </div>
+                    <div className="field col-4">
+                        <label htmlFor="allowedDinner">{t('allowedDinner')}</label>
+                        <InputNumber
+                            id="allowedDinner"
+                            placeholder={t('enterAllowedDinner')}
+                            mode="decimal"
+                            minFractionDigits={0}
+                            maxFractionDigits={0}
+                            min={0}
+                            max={100}
+                            value={form.allowedDinner}
+                            onChange={(e) => setForm({ ...form, allowedDinner: e.value })}
+                        />
+                    </div>
                 </div>
             </div>
             <ChoosePrices

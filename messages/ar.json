@@ -182,7 +182,13 @@
         "enterFridayPrice": "أدخل سعر الجمعة",
         "deactivate": "إلغاء التفعيل",
         "selectPrices": "اختر الأسعار",
-        "editPackageButton": "تحرير الحزمة"
+        "editPackageButton": "تحرير الحزمة",
+        "allowedBreakfast": "رقم الفطور المسموح به",
+        "enterAllowedBreakfast": "أدخل عدد الفطور المسموح به",
+        "allowedLunch": "رقم الغداء المسموح به",
+        "enterAllowedLunch": "أدخل عدد الغداء المسموح به",
+        "allowedDinner": "رقم العشاء المسموح به",
+        "enterAllowedDinner": "أدخل عدد العشاء المسموح به"
     },
     "createPackage": {
         "maleImage": "صورة الذكر",
@@ -225,7 +231,13 @@
         "packagePrice": "سعر الباقة",
         "enterOptionPrice": "أدخل سعر الخيار",
         "add": "إضافة",
-        "cancel": "إلغاء"
+        "cancel": "إلغاء",
+        "allowedBreakfast": "رقم الفطور المسموح به",
+        "enterAllowedBreakfast": "أدخل عدد الفطور المسموح به",
+        "allowedLunch": "رقم الغداء المسموح به",
+        "enterAllowedLunch": "أدخل عدد الغداء المسموح به",
+        "allowedDinner": "رقم العشاء المسموح به",
+        "enterAllowedDinner": "أدخل عدد العشاء المسموح به"
     },
     "meals": {
         "orders": "الطلبات",
@@ -796,7 +808,14 @@
         "submit": "حفظ تكوين الباقة",
         "enterValue": "أدخل القيمة",
         "enterPrice": "أدخل السعر",
-        "bundleCreatedSuccessfully": "تم إنشاء الباقة بنجاح"
+        "bundleCreatedSuccessfully": "تم إنشاء الباقة بنجاح",
+        "allowedMeals": "الوجبات المسموح بها",
+        "allowedBreakfast": "رقم الفطور المسموح به",
+        "enterAllowedBreakfast": "أدخل عدد الفطور المسموح به",
+        "allowedLunch": "رقم الغداء المسموح به",
+        "enterAllowedLunch": "أدخل عدد الغداء المسموح به",
+        "allowedDinner": "رقم العشاء المسموح به",
+        "enterAllowedDinner": "أدخل عدد العشاء المسموح به"
     },
     "userProfile": {
         "gender": {

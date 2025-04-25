@@ -182,7 +182,13 @@
         "enterFridayPrice": "Enter Friday Price",
         "deactivate": "Deactivate",
         "selectPrices": "Select Prices",
-        "editPackageButton": "Edit Package"
+        "editPackageButton": "Edit Package",
+        "allowedBreakfast": "Allowed Breakfast Count",
+        "enterAllowedBreakfast": "Enter allowed breakfast count",
+        "allowedLunch": "Allowed Lunch Count",
+        "enterAllowedLunch": "Enter allowed lunch count",
+        "allowedDinner": "Allowed Dinner Count",
+        "enterAllowedDinner": "Enter allowed dinner count"
     },
     "createPackage": {
         "maleImage": "Male Image",
@@ -225,7 +231,13 @@
         "packagePrice": "Package Price",
         "enterOptionPrice": "Enter Option Price",
         "add": "Add",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "allowedBreakfast": "Allowed Breakfast Count",
+        "enterAllowedBreakfast": "Enter allowed breakfast count",
+        "allowedLunch": "Allowed Lunch Count",
+        "enterAllowedLunch": "Enter allowed lunch count",
+        "allowedDinner": "Allowed Dinner Count",
+        "enterAllowedDinner": "Enter allowed dinner count"
     },
     "coupons": {
         "header": "Coupons",
@@ -807,7 +819,14 @@
         "submit": "Save Bundle Configuration",
         "enterValue": "Enter Value",
         "enterPrice": "Enter Price",
-        "bundleCreatedSuccessfully": "Bundle created successfully"
+        "bundleCreatedSuccessfully": "Bundle created successfully",
+        "allowedMeals": "Allowed Meals Count",
+        "allowedBreakfast": "Allowed Breakfast Count",
+        "enterAllowedBreakfast": "Enter allowed breakfast count",
+        "allowedLunch": "Allowed Lunch Count",
+        "enterAllowedLunch": "Enter allowed lunch count",
+        "allowedDinner": "Allowed Dinner Count",
+        "enterAllowedDinner": "Enter allowed dinner count"
     },
     "userProfile": {
         "gender": {

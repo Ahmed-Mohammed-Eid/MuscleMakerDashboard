@@ -12,6 +12,10 @@ export default function FlexBundleComponent({ locale }) {
     const t = useTranslations('flexBundle');
     const isRTL = locale === 'ar';
 
+    const [allowedBreakfast, setAllowedBreakfast] = useState(0);
+    const [allowedLunch, setAllowedLunch] = useState(0);
+    const [allowedDinner, setAllowedDinner] = useState(0);
+
     const [bundleData, setBundleData] = useState({
         carb: [],
         protine: [],
@@ -80,6 +84,9 @@ export default function FlexBundleComponent({ locale }) {
                     })) || [],
                 bundlePeriods: flexOptions?.bundlePeriods || []
             });
+            setAllowedBreakfast(flexOptions?.allowedBreakfast || 0);
+            setAllowedLunch(flexOptions?.allowedLunch || 0);
+            setAllowedDinner(flexOptions?.allowedDinner || 0);
         }
     };
 
@@ -100,7 +107,7 @@ export default function FlexBundleComponent({ locale }) {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`
                 },
-                body: JSON.stringify(bundleData)
+                body: JSON.stringify({ ...bundleData, allowedBreakfast, allowedLunch, allowedDinner })
             });
 
             if (!response.ok) {
@@ -412,6 +419,35 @@ export default function FlexBundleComponent({ locale }) {
                 { name: 'weekCount', label: 'weekCount' },
                 { name: 'price', label: 'price' }
             ])}
+
+            {/* ALLOWED BREAKFAST, LUNCH AND DINNER */}
+            <div className="card">
+                <h2 className="text-xl font-bold mb-3">{t('allowedMeals')}</h2>
+                <div className="grid formgrid p-fluid">
+                    <div className="field col-4">
+                        <label htmlFor="allowedBreakfast">{t('allowedBreakfast')}</label>
+                        <InputNumber
+                            id="allowedBreakfast"
+                            placeholder={t('enterAllowedBreakfast')}
+                            mode="decimal"
+                            minFractionDigits={0}
+                            maxFractionDigits={0}
+                            min={0}
+                            max={100}
+                            value={allowedBreakfast}
+                            onChange={(e) => setAllowedBreakfast(e.value)}
+                        />
+                    </div>
+                    <div className="field col-4">
+                        <label htmlFor="allowedLunch">{t('allowedLunch')}</label>
+                        <InputNumber id="allowedLunch" placeholder={t('enterAllowedLunch')} mode="decimal" minFractionDigits={0} maxFractionDigits={0} min={0} max={100} value={allowedLunch} onChange={(e) => setAllowedLunch(e.value)} />
+                    </div>
+                    <div className="field col-4">
+                        <label htmlFor="allowedDinner">{t('allowedDinner')}</label>
+                        <InputNumber id="allowedDinner" placeholder={t('enterAllowedDinner')} mode="decimal" minFractionDigits={0} maxFractionDigits={0} min={0} max={100} value={allowedDinner} onChange={(e) => setAllowedDinner(e.value)} />
+                    </div>
+                </div>
+            </div>
 
             <div className="flex justify-content-end mt-2 w-full">
                 <Button type="submit" label={t('submit')} icon="pi pi-save" severity="primary" className="w-full" />
