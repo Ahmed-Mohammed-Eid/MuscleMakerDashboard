@@ -37,6 +37,7 @@ export default function ChoosePrices({ getPrices, selectedPrices }) {
                                     id={`packageTime${index}`}
                                     value={prices.pricesArray[index]?.period}
                                     options={[
+                                        { label: t('1day'), value: 'One Day' },
                                         { label: t('1week'), value: '1 week' },
                                         { label: t('2weeks'), value: '2 weeks' },
                                         { label: t('3weeks'), value: '3 weeks' },
