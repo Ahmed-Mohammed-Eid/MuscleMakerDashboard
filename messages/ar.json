@@ -94,7 +94,8 @@
         "reportsList": "قائمة التقارير",
         "dailyMealsReport": "تقرير الوجبات اليومي",
         "settings": "الإعدادات",
-        "logout": "تسجيل الخروج"
+        "logout": "تسجيل الخروج",
+        "totalCookingMealsReport": "تقرير إجمالي الوجبات المطبوخة"
     },
     "DashboardHome": {
         "all": "الكل",
@@ -525,7 +526,7 @@
         "errorDeletingClient": "حدث خطأ أثناء حذف العميل",
         "errorGettingUsers": "حدث خطأ أثناء جلب المستخدمين",
         "usernameCopied": "تم نسخ اسم المستخدم",
-        "search": "البحث"
+        "search": "قم بالبحث باستخدام رقم العضوية أو رقم الهاتف"
     },
     "userWallets": {
         "walletActions": "إجراءات المحفظة",

@@ -94,7 +94,8 @@
         "reportsList": "Reports List",
         "dailyMealsReport": "Daily Meals Report",
         "settings": "Settings",
-        "logout": "LogOut"
+        "logout": "LogOut",
+        "totalCookingMealsReport": "Total Cooking Meals Report"
     },
     "DashboardHome": {
         "all": "All",
@@ -477,7 +478,7 @@
         "errorDeletingClient": "Error deleting client",
         "errorGettingUsers": "Error getting users",
         "usernameCopied": "Username copied",
-        "search": "Search"
+        "search": "Search by Membership ID or Phone Number"
     },
     "userWallets": {
         "walletActions": "Wallet Actions",

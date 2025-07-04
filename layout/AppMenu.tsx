@@ -205,6 +205,12 @@ const AppMenu = () => {
                     label: t('AppMenu.dailyMealsReport'),
                     icon: 'pi pi-fw pi-list',
                     to: `/${locale}/meals-report`
+                },
+                // TOTAL COOKING MEALS REPORT
+                {
+                    label: t('AppMenu.totalCookingMealsReport'),
+                    icon: 'pi pi-fw pi-list',
+                    to: `/${locale}/reports/totals-cooking-meals`
                 }
             ]
         },

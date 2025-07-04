@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -30,7 +30,7 @@ export default function ClientsTable({ locale, isRTL }) {
     const [globalFilter, setGlobalFilter] = useState('');
 
     // GET THE CLIENTS FROM THE API
-    async function getClients() {
+    const getClients = useCallback(async () => {
         // GET THE TOKEN FROM THE LOCAL STORAGE
         const token = localStorage.getItem('token');
         setLoading(true);
@@ -59,7 +59,7 @@ export default function ClientsTable({ locale, isRTL }) {
         } finally {
             setLoading(false);
         }
-    }
+    }, [globalFilter, loadDataOption, page, t]);
 
     // EFFECT TO GET THE USERS
     useEffect(() => {
@@ -69,13 +69,13 @@ export default function ClientsTable({ locale, isRTL }) {
         }, 500);
 
         return () => clearTimeout(debounceTimer);
-    }, [globalFilter]);
+    }, [globalFilter, getClients]);
 
     useEffect(() => {
         if (page > 1) {
             getClients();
         }
-    }, [page]);
+    }, [page, getClients]);
 
     // DELETE THE PACKAGE HANDLER
     const deleteClientHandler = async () => {
@@ -138,6 +138,7 @@ export default function ClientsTable({ locale, isRTL }) {
                 {/* LOAD MORE SECTION */}
                 {hasNextPage && (
                     <div className="flex gap-2 items-center">
+                        {/* Submit Button */}
                         <Dropdown
                             value={loadDataOption}
                             options={[
@@ -177,7 +178,6 @@ export default function ClientsTable({ locale, isRTL }) {
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                 emptyMessage={t('noUsersFound')}
                 loading={loading}
-                globalFilter={globalFilter}
             >
                 <Column field="subscriptionId" header={t('membershipId')} sortable filter />
                 <Column field="clientName" header={t('name')} sortable filter />
