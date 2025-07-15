@@ -193,27 +193,27 @@ const AppMenu = () => {
             ]
         },
         // Delivery
-        {
-            label: t('AppMenu.delivery'),
-            icon: 'pi pi-fw pi-list',
-            items: [
-                {
-                    label: t('AppMenu.deliveryList'),
-                    icon: 'pi pi-fw pi-list',
-                    to: `/${locale}/delivery`
-                },
-                {
-                    label: t('AppMenu.deliveryPeriods'),
-                    icon: 'pi pi-fw pi-list',
-                    to: `/${locale}/delivery/periods`
-                },
-                {
-                    label: t('AppMenu.createDelivery'),
-                    icon: 'pi pi-fw pi-plus',
-                    to: `/${locale}/delivery/create`
-                }
-            ]
-        },
+        // {
+        //     label: t('AppMenu.delivery'),
+        //     icon: 'pi pi-fw pi-list',
+        //     items: [
+        //         {
+        //             label: t('AppMenu.deliveryList'),
+        //             icon: 'pi pi-fw pi-list',
+        //             to: `/${locale}/delivery`
+        //         },
+        //         {
+        //             label: t('AppMenu.deliveryPeriods'),
+        //             icon: 'pi pi-fw pi-list',
+        //             to: `/${locale}/delivery/periods`
+        //         },
+        //         {
+        //             label: t('AppMenu.createDelivery'),
+        //             icon: 'pi pi-fw pi-plus',
+        //             to: `/${locale}/delivery/create`
+        //         }
+        //     ]
+        // },
         {
             label: t('AppMenu.reports'),
             icon: 'pi pi-fw pi-chart-bar',
@@ -233,6 +233,17 @@ const AppMenu = () => {
                     label: t('AppMenu.totalCookingMealsReport'),
                     icon: 'pi pi-fw pi-list',
                     to: `/${locale}/reports/totals-cooking-meals`
+                }
+            ]
+        },
+        {
+            label: t('AppMenu.tools'),
+            icon: 'pi pi-fw pi-list',
+            items: [
+                {
+                    label: t('AppMenu.uploadRegionsByExcel'),
+                    icon: 'pi pi-fw pi-upload',
+                    to: `/${locale}/tools/upload-regions-by-excel`
                 }
             ]
         },

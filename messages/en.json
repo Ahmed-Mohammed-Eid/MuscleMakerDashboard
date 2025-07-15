@@ -94,7 +94,9 @@
         "delivery": "Delivery",
         "deliveryList": "Delivery Zones List",
         "deliveryPeriods": "Delivery Periods",
-        "createDelivery": "Create Delivery Zone"
+        "createDelivery": "Create Delivery Zone",
+        "tools": "Tools",
+        "uploadRegionsByExcel": "Upload Regions By Excel"
     },
     "DashboardHome": {
         "all": "All",
@@ -674,7 +676,10 @@
         "deleteConfirmation": "Are you sure you want to delete this meal?",
         "no": "No",
         "yes": "Yes",
-        "noMealsFound": "No meals found"
+        "noMealsFound": "No meals found",
+        "uploadRegionsByExcel": "Upload Regions By Excel",
+        "ExcelFile": "Excel File",
+        "uploadFile": "Upload File"
     },
     "editMeal": {
         "editMeal": "Edit Meal",

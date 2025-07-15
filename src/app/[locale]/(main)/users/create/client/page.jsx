@@ -25,6 +25,9 @@ export default function CreateClient({ params: { locale } }) {
     // STATE
     const [bundles, setBundles] = useState([]);
     const [flexBundleOptions, setFlexBundleOptions] = useState(null);
+    const [governoratesList, setGovernoratesList] = useState([]);
+
+    const [regionsList, setRegionsList] = useState([]);
     const [form, setForm] = useState({
         clientName: '',
         phoneNumber: '',
@@ -171,19 +174,59 @@ export default function CreateClient({ params: { locale } }) {
         }
     }
 
-    const governorateOptions = [
-        { label: t('governorates.jahra'), value: 'الجهراء' },
-        { label: t('governorates.hawally'), value: 'حولي' },
-        { label: t('governorates.capital'), value: 'العاصمة' },
-        { label: t('governorates.farwaniya'), value: 'الفروانيه' },
-        { label: t('governorates.mubarakAlKabeer'), value: 'مبارك الكبير' },
-        { label: t('governorates.ahmadi'), value: 'الاحمدي' }
-    ];
+    // Fetch governorates on component mount
+    const fetchGovernorates = async () => {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await axios.get(`${process.env.API_URL}/governorates`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            if (response.data?.success) {
+                setGovernoratesList(response.data.governorates);
+            }
+        } catch (error) {
+            toast.error(error?.response?.data?.message || 'Error fetching governorates');
+            setGovernoratesList([]);
+        }
+    };
+
+    // Fetch regions based on selected governorate
+    const fetchRegions = async (governorateId) => {
+        if (!governorateId) {
+            setRegionsList([]);
+            return;
+        }
+
+        const token = localStorage.getItem('token');
+        try {
+            const response = await axios.get(`${process.env.API_URL}/gove/regions`, {
+                params: { governorateId },
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            if (response.data?.success) {
+                setRegionsList(response.data.regions);
+            }
+        } catch (error) {
+            toast.error(error?.response?.data?.message || 'Error fetching regions');
+            setRegionsList([]);
+        }
+    };
+
+    const governorateOptions = governoratesList.map((gov) => ({
+        label: gov.governorate,
+        value: gov.governorate,
+        id: gov._id // Include ID for region fetching
+    }));
 
     const genderOptions = [
         { label: t('gender.male'), value: 'male' },
         { label: t('gender.female'), value: 'female' }
     ];
+
+    useEffect(() => {
+        fetchGovernorates();
+    }, []);
 
     // Render top options bar
     const renderOptionsBar = () => (
@@ -297,15 +340,41 @@ export default function CreateClient({ params: { locale } }) {
                             <div className="field col-12 md:col-6 mb-4">
                                 <label htmlFor="governorate" className="block font-medium mb-2">
                                     {t('governorateLabel')}
-                                </label>
-                                <Dropdown id="governorate" value={form.governorate} options={governorateOptions} onChange={(e) => setForm({ ...form, governorate: e.value })} placeholder={t('governoratePlaceholder')} className="w-full" />
+                                </label>{' '}
+                                <Dropdown
+                                    id="governorate"
+                                    value={form.governorate}
+                                    options={governorateOptions}
+                                    onChange={(e) => {
+                                        // Find the selected governorate option to get its ID
+                                        const selectedOption = governorateOptions.find((option) => option.value === e.value);
+                                        setForm({
+                                            ...form,
+                                            governorate: e.value, // Store the name
+                                            region: '' // Reset region when governorate changes
+                                        });
+                                        // Use the ID for fetching regions
+                                        if (selectedOption) {
+                                            fetchRegions(selectedOption.id);
+                                        }
+                                    }}
+                                    placeholder={t('governoratePlaceholder')}
+                                    className="w-full"
+                                />
                             </div>
-
                             <div className="field col-12 md:col-6 mb-4">
                                 <label htmlFor="region" className="block font-medium mb-2">
                                     {t('regionLabel')}
                                 </label>
-                                <InputText id="region" value={form.region} onChange={(e) => setForm({ ...form, region: e.target.value })} placeholder={t('regionPlaceholder')} className="w-full" />
+                                <Dropdown
+                                    id="region"
+                                    value={form.region}
+                                    options={regionsList.map((region) => ({ label: region, value: region }))}
+                                    onChange={(e) => setForm({ ...form, region: e.value })}
+                                    placeholder={t('regionPlaceholder')}
+                                    disabled={!form.governorate || regionsList.length === 0}
+                                    className="w-full"
+                                />
                             </div>
 
                             <div className="field col-12 md:col-3 mb-4">
