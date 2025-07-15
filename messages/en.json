@@ -19,20 +19,16 @@
         "primeOneDesign2022": "PrimeOne Design - 2022",
         "primeOneDesign2021": "PrimeOne Design - 2021",
         "muscleMaker": "Muscle Maker",
-
         "bootstrapLightBlue": "Bootstrap Light Blue",
         "bootstrapLightPurple": "Bootstrap Light Purple",
         "bootstrapDarkBlue": "Bootstrap Dark Blue",
         "bootstrapDarkPurple": "Bootstrap Dark Purple",
-
         "materialLightIndigo": "Material Light Indigo",
         "materialLightDeepPurple": "Material Light Deep Purple",
         "materialDarkIndigo": "Material Dark Indigo",
         "materialDarkDeepPurple": "Material Dark Deep Purple",
-
         "tailwindLight": "Tailwind Light",
         "fluentLight": "Fluent Light",
-
         "laraLightIndigo": "Lara Light Indigo",
         "laraLightBlue": "Lara Light Blue",
         "laraLightPurple": "Lara Light Purple",
@@ -41,7 +37,6 @@
         "laraDarkBlue": "Lara Dark Blue",
         "laraDarkPurple": "Lara Dark Purple",
         "laraDarkTeal": "Lara Dark Teal",
-
         "sagaBlue": "Saga Blue",
         "sagaGreen": "Saga Green",
         "sagaOrange": "Saga Orange",
@@ -95,7 +90,11 @@
         "dailyMealsReport": "Daily Meals Report",
         "settings": "Settings",
         "logout": "LogOut",
-        "totalCookingMealsReport": "Total Cooking Meals Report"
+        "totalCookingMealsReport": "Total Cooking Meals Report",
+        "delivery": "Delivery",
+        "deliveryList": "Delivery Zones List",
+        "deliveryPeriods": "Delivery Periods",
+        "createDelivery": "Create Delivery Zone"
     },
     "DashboardHome": {
         "all": "All",
@@ -949,5 +948,48 @@
             "grams": "grams",
             "days": "day / days"
         }
+    },
+    "delivery": {
+        "deliveryZones": "Delivery Zones",
+        "addNewZone": "Add New Zone",
+        "zoneName": "Zone Name",
+        "regions": "Regions",
+        "createdAt": "Created At",
+        "updatedAt": "Updated At",
+        "actions": "Actions",
+        "copyId": "Copy ID",
+        "edit": "Edit",
+        "delete": "Delete",
+        "deleteZone": "Delete Zone",
+        "deleteConfirmation": "Are you sure you want to delete this delivery zone? This action cannot be undone.",
+        "yes": "Yes",
+        "no": "No",
+        "zoneDeletedSuccess": "Delivery zone has been deleted successfully",
+        "zoneIdCopied": "Zone ID copied to clipboard",
+        "copyIdError": "Failed to copy zone ID",
+        "fetchError": "Failed to fetch delivery zones",
+        "deleteError": "Failed to delete delivery zone",
+        "noZonesFound": "No delivery zones found",
+        "createZone": "Create Delivery Zone",
+        "enterZoneName": "Enter zone name",
+        "selectRegions": "Select regions",
+        "fillAllFields": "Please fill all required fields",
+        "zoneCreatedSuccess": "Delivery zone created successfully",
+        "createError": "Failed to create delivery zone",
+        "governorate": "Governorate",
+        "selectGovernorate": "Select governorate",
+        "selectGovernorateFirst": "Please select a governorate first",
+        "fetchGovernoratesError": "Failed to fetch governorates",
+        "fetchRegionsError": "Failed to fetch regions",
+        "editZone": "Edit Delivery Zone",
+        "updateZone": "Update Delivery Zone"
+    },
+    "deliveryPeriods": {
+        "pageTitle": "Manage Delivery Periods",
+        "chipsPlaceholder": "Enter delivery periods (e.g., Morning, Afternoon)",
+        "saveButtonLabel": "Save Periods",
+        "fetchPeriodsError": "Failed to fetch delivery periods. Please try again.",
+        "periodsSavedSuccess": "Delivery periods saved successfully!",
+        "savePeriodsError": "Failed to save delivery periods. Please try again."
     }
 }

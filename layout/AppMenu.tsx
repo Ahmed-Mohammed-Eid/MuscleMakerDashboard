@@ -192,6 +192,28 @@ const AppMenu = () => {
                 }
             ]
         },
+        // Delivery
+        {
+            label: t('AppMenu.delivery'),
+            icon: 'pi pi-fw pi-list',
+            items: [
+                {
+                    label: t('AppMenu.deliveryList'),
+                    icon: 'pi pi-fw pi-list',
+                    to: `/${locale}/delivery`
+                },
+                {
+                    label: t('AppMenu.deliveryPeriods'),
+                    icon: 'pi pi-fw pi-list',
+                    to: `/${locale}/delivery/periods`
+                },
+                {
+                    label: t('AppMenu.createDelivery'),
+                    icon: 'pi pi-fw pi-plus',
+                    to: `/${locale}/delivery/create`
+                }
+            ]
+        },
         {
             label: t('AppMenu.reports'),
             icon: 'pi pi-fw pi-chart-bar',

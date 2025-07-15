@@ -95,6 +95,10 @@
         "dailyMealsReport": "تقرير الوجبات اليومي",
         "settings": "الإعدادات",
         "logout": "تسجيل الخروج",
+        "delivery": "التوصيل",
+        "deliveryList": "قائمة مناطق التوصيل",
+        "createDelivery": "إنشاء منطقة توصيل",
+        "deliveryPeriods": "فترات التوصيل",
         "totalCookingMealsReport": "تقرير إجمالي الوجبات المطبوخة"
     },
     "DashboardHome": {
@@ -947,6 +951,49 @@
             "grams": "جرام",
             "days": "يوم / أيام"
         }
+    },
+        "delivery": {
+        "deliveryZones": "مناطق التوصيل",
+        "addNewZone": "إضافة منطقة جديدة",
+        "zoneName": "اسم المنطقة",
+        "regions": "المناطق",
+        "createdAt": "تاريخ الإنشاء",
+        "updatedAt": "تاريخ التحديث",
+        "actions": "الإجراءات",
+        "copyId": "نسخ المعرف",
+        "edit": "تعديل",
+        "delete": "حذف",
+        "deleteZone": "حذف المنطقة",
+        "deleteConfirmation": "هل أنت متأكد من حذف منطقة التوصيل هذه؟ لا يمكن التراجع عن هذا الإجراء.",
+        "yes": "نعم",
+        "no": "لا",
+        "zoneDeletedSuccess": "تم حذف منطقة التوصيل بنجاح",
+        "zoneIdCopied": "تم نسخ معرف المنطقة",
+        "copyIdError": "فشل نسخ معرف المنطقة",
+        "fetchError": "فشل في جلب مناطق التوصيل",
+        "deleteError": "فشل في حذف منطقة التوصيل",
+        "noZonesFound": "لم يتم العثور على مناطق توصيل",
+        "createZone": "إنشاء منطقة توصيل",
+        "enterZoneName": "أدخل اسم المنطقة",
+        "selectRegions": "اختر المناطق",
+        "fillAllFields": "يرجى ملء جميع الحقول المطلوبة",
+        "zoneCreatedSuccess": "تم إنشاء منطقة التوصيل بنجاح",
+        "createError": "فشل في إنشاء منطقة التوصيل",
+        "governorate": "المحافظة",
+        "selectGovernorate": "اختر المحافظة",
+        "selectGovernorateFirst": "الرجاء اختيار المحافظة أولاً",
+        "fetchGovernoratesError": "فشل في جلب المحافظات",
+        "fetchRegionsError": "فشل في جلب المناطق",
+        "editZone": "تعديل منطقة التوصيل",
+        "updateZone": "تحديث منطقة التوصيل"
+    },
+        "deliveryPeriods": {
+        "pageTitle": "إدارة فترات التوصيل",
+        "chipsPlaceholder": "أدخل فترات التوصيل (مثال: صباحية، مسائية)",
+        "saveButtonLabel": "حفظ الفترات",
+        "fetchPeriodsError": "فشل في جلب فترات التوصيل. يرجى المحاولة مرة أخرى.",
+        "periodsSavedSuccess": "تم حفظ فترات التوصيل بنجاح!",
+        "savePeriodsError": "فشل في حفظ فترات التوصيل. يرجى المحاولة مرة أخرى."
     },
     "createClient": {
         "sections": {
