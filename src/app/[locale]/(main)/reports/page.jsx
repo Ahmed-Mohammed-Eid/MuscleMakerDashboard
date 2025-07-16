@@ -19,6 +19,10 @@ export default function Reports({ params: { locale } }) {
     const [couponCode, setCouponCode] = React.useState('');
     const [endDate, setEndDate] = React.useState('');
 
+    const startDateReports = ['kitchenMeals', 'packingList', 'couponHistory', 'addressLabels'];
+    const endDateReports = ['kitchenMeals', 'couponHistory'];
+    const startDateOnlyReports = ['packingList', 'addressLabels'];
+
     function handleSubmit(e) {
         e.preventDefault();
         setLoading(true);
@@ -73,13 +77,14 @@ export default function Reports({ params: { locale } }) {
                                 { label: t('activeClients'), value: 'active clients' },
                                 { label: t('kitchenMeals'), value: 'kitchenMeals' },
                                 { label: t('packingList'), value: 'packingList' },
-                                { label: t('couponHistory'), value: 'couponHistory' }
+                                { label: t('couponHistory'), value: 'couponHistory' },
+                                { label: t('addressLabels'), value: 'addressLabels' }
                             ]}
                         />
                     </div>
 
-                    {(reportType === 'kitchenMeals' || reportType === 'packingList' || reportType === 'couponHistory') && (
-                        <div className={`field col-12 md:col-6 ${reportType === 'packingList' ? 'md:col-12' : ''}`}>
+                    {startDateReports.includes(reportType) && (
+                        <div className={`field col-12 md:col-6 ${startDateOnlyReports.includes(reportType) ? 'md:col-12' : ''}`}>
                             <label htmlFor="startDate">{t('startDate')}</label>
                             <Calendar
                                 id="startDate"
@@ -94,7 +99,7 @@ export default function Reports({ params: { locale } }) {
                         </div>
                     )}
 
-                    {(reportType === 'kitchenMeals' || reportType === 'couponHistory') && (
+                    {endDateReports.includes(reportType) && (
                         <div className="field col-12 md:col-6">
                             <label htmlFor="endDate">{t('endDate')}</label>
                             <Calendar
