@@ -98,7 +98,6 @@ export default function FlexBundleComponent({ locale }) {
         e.preventDefault();
         // GET TOKEN
         const token = localStorage.getItem('token');
-        console.log(bundleData);
 
         try {
             const response = await fetch(`${process.env.API_URL}/create/flex/bundle`, {

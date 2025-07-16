@@ -79,7 +79,6 @@ export default function EditCategoryForm({ id }) {
                 }
             })
             .then((res) => {
-                console.log(res.data);
                 setCategoryNameAR(res.data?.category?.categoryNameAR || '');
                 setCategoryNameEN(res.data?.category?.categoryNameEN || '');
             })

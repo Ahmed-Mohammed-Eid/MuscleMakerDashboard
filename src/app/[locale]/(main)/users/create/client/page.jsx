@@ -85,7 +85,6 @@ export default function CreateClient({ params: { locale } }) {
                 const flexOptionsResponse = await axios.get(`${process.env.API_URL}/flex/bundle/options`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
-                console.log(flexOptionsResponse.data?.flexOptions);
                 setFlexBundleOptions(flexOptionsResponse.data?.flexOptions);
             } catch (error) {
                 toast.error(error?.response?.data?.message || 'Error fetching data');

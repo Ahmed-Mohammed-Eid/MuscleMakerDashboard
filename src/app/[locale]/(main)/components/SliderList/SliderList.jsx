@@ -25,7 +25,6 @@ export default function SliderList({ locale, isRTL }) {
                 }
             })
             .then((response) => {
-                console.log(response.data);
                 const ads = response.data?.homeAds;
                 const adsArray = [];
 

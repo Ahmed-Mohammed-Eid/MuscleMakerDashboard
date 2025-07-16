@@ -134,7 +134,6 @@ export default function Wallets({ wallet: serverWallet, id, locale, isRTL }) {
                 }
             )
             .then((response) => {
-                console.log(response.data);
                 // CLOSE THE DIALOG
                 setDialogsState({ ...dialogsState, deductBalance: false });
                 // SHOW SUCCESS MESSAGE
@@ -193,7 +192,6 @@ export default function Wallets({ wallet: serverWallet, id, locale, isRTL }) {
                 }
             })
             .then((response) => {
-                console.log(response.data);
                 setWallet(response.data?.wallet || {});
             })
             .catch((error) => {

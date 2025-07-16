@@ -45,7 +45,6 @@ export default function UsersTable({ locale, isRTL }) {
                 }
             })
             .then((res) => {
-                console.log(res);
                 if (loadDataOption === 'saveOldData' && page > 1) {
                     // GET A COPY OF THE ORDERS ARRAY
                     const usersCopy = [...users];
@@ -83,7 +82,6 @@ export default function UsersTable({ locale, isRTL }) {
                 }
             })
             .then((res) => {
-                console.log(res);
                 if (loadDataOption === 'saveOldData' && page > 1) {
                     // GET A COPY OF THE ORDERS ARRAY
                     const usersCopy = [...users];
@@ -190,7 +188,6 @@ export default function UsersTable({ locale, isRTL }) {
                 }
             })
             .then((res) => {
-                console.log(res);
                 // SHOW THE NOTIFICATION
                 toast.success(res.data.message);
                 // GET THE EMPLOYEES

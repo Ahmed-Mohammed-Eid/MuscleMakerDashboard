@@ -565,7 +565,6 @@ export default function UserProfile({ id, locale }) {
                                     onChange={(e) => {
                                         setRenewType(e.value);
                                         const currentBundle = userData?.clientData?.subscripedBundle;
-                                        console.log(currentBundle);
                                         setRenewForm((prev) => ({
                                             ...prev,
                                             bundleId: currentBundle?.bundleId?._id || '',

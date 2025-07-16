@@ -58,8 +58,6 @@ const LoginPage = ({ params: { locale } }) => {
             document.cookie = `token=${res.data.token}; path=/`;
             document.cookie = `role=${res.data?.user?.role}; path=/`;
 
-            console.log(res.data);
-
             if (res.data?.user?.role === 'admin') {
                 const timer = setTimeout(() => {
                     clearTimeout(timer);

@@ -23,7 +23,6 @@ const getEmployee = async (id) => {
                 console.log(error?.response?.data?.message);
             });
     } else {
-        console.log('No token found');
     }
 };
 

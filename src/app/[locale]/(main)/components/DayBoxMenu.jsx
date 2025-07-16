@@ -145,7 +145,6 @@ export default function DayBoxMenu({ getMenuAndTypes, boxMenu }) {
                                             // FILTER ALL MEALS AND RETURN ONLY THE MEALS WITH THE SELECTED TYPE
                                             const filteredMeals = allMeals.filter((meal, index) => {
                                                 if (meal.mealType === e.value) {
-                                                    console.log(meal.mealTitle, meal.mealType, e.value);
                                                     return {
                                                         value: meal._id,
                                                         label: meal.mealTitle
