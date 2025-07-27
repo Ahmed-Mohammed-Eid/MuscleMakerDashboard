@@ -215,6 +215,22 @@ const AppMenu = () => {
         //     ]
         // },
         {
+            label: t('AppMenu.notifications'),
+            icon: 'pi pi-fw pi-bell',
+            items: [
+                {
+                    label: t('AppMenu.notificationsList'),
+                    icon: 'pi pi-fw pi-list',
+                    to: `/${locale}/notifications`
+                },
+                {
+                    label: t('AppMenu.createNotification'),
+                    icon: 'pi pi-fw pi-plus',
+                    to: `/${locale}/notifications/create`
+                }
+            ]
+        },
+        {
             label: t('AppMenu.reports'),
             icon: 'pi pi-fw pi-chart-bar',
             items: [

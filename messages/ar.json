@@ -96,8 +96,10 @@
         "deliveryPeriods": "فترات التوصيل",
         "totalCookingMealsReport": "تقرير إجمالي الوجبات المطبوخة",
         "tools": "الأدوات",
-        "uploadRegionsByExcel": "رفع المناطق عبر إكسل"
-
+        "uploadRegionsByExcel": "رفع المناطق عبر إكسل",
+        "notifications": "الإشعارات",
+        "notificationsList": "قائمة الإشعارات",
+        "createNotification": "إنشاء إشعار"
     },
     "DashboardHome": {
         "all": "الكل",
@@ -1092,5 +1094,19 @@
         "wed": "الأربعاء",
         "thu": "الخميس",
         "fri": "الجمعة"
+    },
+    "Notifications": {
+        "createNotification": "إنشاء إشعار",
+        "authError": "خطأ في المصادقة. يرجى تسجيل الدخول.",
+        "createSuccess": "تم إنشاء الإشعار بنجاح.",
+        "createError": "فشل في إنشاء الإشعار.",
+        "messageLabel": "الرسالة",
+        "messageRequired": "الرسالة مطلوبة.",
+        "filesLabel": "الملفات",
+        "choose": "اختر",
+        "upload": "رفع",
+        "cancel": "إلغاء",
+        "dragDropFiles": "اسحب وأسقط الملفات هنا",
+        "createButton": "إرسال الإشعار"
     }
 }

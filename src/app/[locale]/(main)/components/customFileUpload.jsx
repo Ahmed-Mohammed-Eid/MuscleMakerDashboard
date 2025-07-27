@@ -5,7 +5,6 @@ import {FileUpload} from 'primereact/fileupload';
 import {ProgressBar} from 'primereact/progressbar';
 import {Button} from 'primereact/button';
 import {Tooltip} from 'primereact/tooltip';
-import {Tag} from 'primereact/tag';
 
 export default function CustomFileUpload({multiple, setFiles, removeThisItem}) {
     const toast = useRef(null);

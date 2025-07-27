@@ -21,6 +21,6 @@
         ],
         "typeRoots": ["./types", "./node_modules/@types"]
     },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "types/**/*.d.ts"],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "types/**/*.d.ts", "src/app/[locale]/(main)/components/notifications/NotificationForm.jsx", "src/app/[locale]/(main)/notifications/create/page.jsx", "src/app/[locale]/(main)/notifications/page.jsx"],
     "exclude": ["node_modules"]
 }

@@ -96,7 +96,10 @@
         "deliveryPeriods": "Delivery Periods",
         "createDelivery": "Create Delivery Zone",
         "tools": "Tools",
-        "uploadRegionsByExcel": "Upload Regions By Excel"
+        "uploadRegionsByExcel": "Upload Regions By Excel",
+        "notifications": "Notifications",
+        "notificationsList": "Notifications List",
+        "createNotification": "Create Notification"
     },
     "DashboardHome": {
         "all": "All",
@@ -997,5 +1000,19 @@
         "fetchPeriodsError": "Failed to fetch delivery periods. Please try again.",
         "periodsSavedSuccess": "Delivery periods saved successfully!",
         "savePeriodsError": "Failed to save delivery periods. Please try again."
+    },
+    "Notifications": {
+        "createNotification": "Create Notification",
+        "authError": "Authentication error. Please log in.",
+        "createSuccess": "Notification created successfully.",
+        "createError": "Failed to create notification.",
+        "messageLabel": "Message",
+        "messageRequired": "Message is required.",
+        "filesLabel": "Files",
+        "choose": "Choose",
+        "upload": "Upload",
+        "cancel": "Cancel",
+        "dragDropFiles": "Drag and drop files here",
+        "createButton": "Send Notification"
     }
 }
