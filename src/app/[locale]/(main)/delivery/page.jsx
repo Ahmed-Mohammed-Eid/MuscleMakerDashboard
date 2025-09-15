@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -13,9 +13,6 @@ import Link from 'next/link';
 export default function DeliveryZones({ params: { locale } }) {
     const isRTL = locale === 'ar';
 
-    // Get the router object
-    const router = useRouter();
-
     const t = useTranslations('delivery');
     const [zones, setZones] = useState([]);
     const [visible, setVisible] = useState(false);
@@ -27,7 +24,7 @@ export default function DeliveryZones({ params: { locale } }) {
         return 0;
     });
 
-    function getZones() {
+    const getZones = useCallback(() => {
         const token = localStorage.getItem('token');
         axios
             .get(`${process.env.API_URL}/delivery/zones`, {
@@ -41,11 +38,11 @@ export default function DeliveryZones({ params: { locale } }) {
             .catch((error) => {
                 toast.error(error?.response?.data?.message || t('fetchError'));
             });
-    }
+    }, [t]);
 
     useEffect(() => {
         getZones();
-    }, []);
+    }, [getZones]);
 
     const deleteHandler = async () => {
         const token = localStorage.getItem('token');

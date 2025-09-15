@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { toast } from 'react-hot-toast';
@@ -58,7 +58,7 @@ export default function DefaultPage({ params: { locale } }) {
 
         // GET THE MEALS
         getMeals();
-    }, []);
+    }, [selectedDay]);
 
     // SUBMIT HANDLER
     const handleSubmit = async () => {

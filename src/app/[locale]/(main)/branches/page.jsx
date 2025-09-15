@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 // AXIOS
 import axios from 'axios';
@@ -85,7 +85,7 @@ export default function Branches({ params: { locale } }) {
     };
 
     // FUNCTION TO GET THE SHIFTS
-    const getBranches = () => {
+    const getBranches = useCallback(() => {
         // GET THE TOKEN FROM LOCAL STORAGE
         const token = localStorage.getItem('token');
 
@@ -106,12 +106,12 @@ export default function Branches({ params: { locale } }) {
         } else {
             toast.error(t('notAuthorized'));
         }
-    };
+    }, [t]);
 
     // FETCH SHIFTS
     useEffect(() => {
         getBranches();
-    }, []);
+    }, [getBranches]);
 
     // DELETE THE BRANCH HANDLER
     const deleteHandler = async () => {

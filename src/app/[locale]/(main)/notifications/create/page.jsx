@@ -1,4 +1,4 @@
-import NotificationForm from '../../components/notifications/NotificationForm';
+import NotificationForm from '../../../../../components/notifications/NotificationForm';
 import { useTranslations } from 'next-intl';
 
 export default function CreateNotificationPage({ params: { locale } }) {

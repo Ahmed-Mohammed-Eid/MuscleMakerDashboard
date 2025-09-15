@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Calendar } from 'primereact/calendar';
 import { Button } from 'primereact/button';
 import { ProgressSpinner } from 'primereact/progressspinner';
@@ -47,7 +47,7 @@ function TotalsCookingMealsReport({ params: { locale } }) {
 
     const t = translations[locale] || translations.en;
 
-    const fetchReport = async () => {
+    const fetchReport = useCallback(async () => {
         // TOKEN
         const token = localStorage.getItem('token');
 
@@ -77,11 +77,11 @@ function TotalsCookingMealsReport({ params: { locale } }) {
         } finally {
             setLoading(false);
         }
-    };
+    }, [date]);
 
     useEffect(() => {
         fetchReport();
-    }, []);
+    }, [fetchReport]);
 
     const componentToPdf = () => {
         return <ManufacturingReport reportData={reportData} />;

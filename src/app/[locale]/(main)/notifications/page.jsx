@@ -1,7 +1,7 @@
 'use client';
 
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -10,8 +10,7 @@ import { Button } from 'primereact/button';
 import { toast } from 'react-hot-toast';
 import Image from 'next/image';
 
-
-export default function NotificationsPage({ params: { locale } } ) {
+export default function NotificationsPage({ params: { locale } }) {
     const t = useTranslations();
     const [notifications, setNotifications] = useState([]);
     const [visible, setVisible] = useState(false);
@@ -21,23 +20,26 @@ export default function NotificationsPage({ params: { locale } } ) {
     const isRTL = locale === 'ar';
 
     // Define translations locally to avoid JSON file modifications
-    const translations = {
-        message: isRTL ? 'الرسالة' : 'Message',
-        image: isRTL ? 'الصورة' : 'Image',
-        createdAt: isRTL ? 'تاريخ الإنشاء' : 'Created At',
-        actions: isRTL ? 'الإجراءات' : 'Actions',
-        delete: isRTL ? 'حذف' : 'Delete',
-        no: isRTL ? 'لا' : 'No',
-        yes: isRTL ? 'نعم' : 'Yes',
-        deleteNotification: isRTL ? 'حذف الإشعار' : 'Delete Notification',
-        deleteConfirmation: isRTL ? 'هل أنت متأكد من رغبتك في حذف هذا الإشعار؟' : 'Are you sure you want to delete this notification?',
-        noNotifications: isRTL ? 'لا توجد إشعارات' : 'No notifications found',
-        fetchError: isRTL ? 'فشل جلب الإشعارات' : 'Failed to fetch notifications',
-        deleteSuccess: isRTL ? 'تم حذف الإشعار بنجاح' : 'Notification deleted successfully',
-        deleteError: isRTL ? 'فشل حذف الإشعار' : 'Failed to delete notification'
-    };
+    const translations = useMemo(
+        () => ({
+            message: isRTL ? 'الرسالة' : 'Message',
+            image: isRTL ? 'الصورة' : 'Image',
+            createdAt: isRTL ? 'تاريخ الإنشاء' : 'Created At',
+            actions: isRTL ? 'الإجراءات' : 'Actions',
+            delete: isRTL ? 'حذف' : 'Delete',
+            no: isRTL ? 'لا' : 'No',
+            yes: isRTL ? 'نعم' : 'Yes',
+            deleteNotification: isRTL ? 'حذف الإشعار' : 'Delete Notification',
+            deleteConfirmation: isRTL ? 'هل أنت متأكد من رغبتك في حذف هذا الإشعار؟' : 'Are you sure you want to delete this notification?',
+            noNotifications: isRTL ? 'لا توجد إشعارات' : 'No notifications found',
+            fetchError: isRTL ? 'فشل جلب الإشعارات' : 'Failed to fetch notifications',
+            deleteSuccess: isRTL ? 'تم حذف الإشعار بنجاح' : 'Notification deleted successfully',
+            deleteError: isRTL ? 'فشل حذف الإشعار' : 'Failed to delete notification'
+        }),
+        [isRTL]
+    );
 
-    function getNotifications() {
+    const getNotifications = useCallback(() => {
         setLoading(true);
         axios
             .get(`${process.env.API_URL}/all/notifications`, {
@@ -55,7 +57,7 @@ export default function NotificationsPage({ params: { locale } } ) {
             .finally(() => {
                 setLoading(false);
             });
-    }
+    }, [translations]);
 
     const deleteHandler = async () => {
         if (!notificationIdToDelete) return;
@@ -90,7 +92,7 @@ export default function NotificationsPage({ params: { locale } } ) {
 
     useEffect(() => {
         getNotifications();
-    }, []);
+    }, [getNotifications]);
 
     return (
         <div className="card mb-0" dir={isRTL ? 'rtl' : 'ltr'}>

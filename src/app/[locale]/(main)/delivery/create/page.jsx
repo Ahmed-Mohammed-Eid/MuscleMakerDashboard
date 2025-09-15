@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
@@ -24,13 +24,8 @@ export default function CreateDeliveryZone({ params: { locale } }) {
         regions: []
     });
 
-    // Fetch governorates on component mount
-    useEffect(() => {
-        fetchGovernorates();
-    }, []);
-
     // Fetch governorates
-    const fetchGovernorates = async () => {
+    const fetchGovernorates = useCallback(async () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.get(`${process.env.API_URL}/governorates`, {
@@ -42,7 +37,12 @@ export default function CreateDeliveryZone({ params: { locale } }) {
         } catch (error) {
             toast.error(t('fetchGovernoratesError'));
         }
-    };
+    }, [t]);
+
+    // Fetch governorates on component mount
+    useEffect(() => {
+        fetchGovernorates();
+    }, [fetchGovernorates]);
 
     // Fetch regions when governorate is selected
     const fetchRegions = async (governorateId) => {

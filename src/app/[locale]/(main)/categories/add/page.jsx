@@ -1,4 +1,4 @@
-import AddCategoryForm from "../../components/categories/addCategory/addCategory";
+import AddCategoryForm from "../../../../../components/categories/addCategory/addCategory";
 
 export default function AddCategoryPage() {
     return (

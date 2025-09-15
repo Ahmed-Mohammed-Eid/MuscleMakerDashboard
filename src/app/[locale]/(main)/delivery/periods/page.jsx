@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { Chips } from 'primereact/chips';
 import { Button } from 'primereact/button';
@@ -13,7 +13,7 @@ function DeliveryPeriodsPage({ params: { locale } }) {
     const [periods, setPeriods] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    const fetchDeliveryPeriods = async () => {
+    const fetchDeliveryPeriods = useCallback(async () => {
         try {
             const adminToken = localStorage.getItem('token');
             const res = await axios.get(`${process.env.API_URL}/delivery/periods`, {
@@ -25,13 +25,13 @@ function DeliveryPeriodsPage({ params: { locale } }) {
         } catch (error) {
             toast.error(error?.response?.data?.message || t('fetchPeriodsError'));
         }
-    };
+    }, [t]);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
             fetchDeliveryPeriods();
         }
-    }, []);
+    }, [fetchDeliveryPeriods]);
 
     const handleSavePeriods = async () => {
         setLoading(true);

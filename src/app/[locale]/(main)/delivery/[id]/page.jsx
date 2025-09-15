@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
@@ -25,14 +25,8 @@ export default function EditDeliveryZone({ params: { locale, id } }) {
         regions: []
     });
 
-    // Fetch governorates and zone details on component mount
-    useEffect(() => {
-        fetchGovernorates();
-        fetchZoneDetails();
-    }, [id]);
-
     // Fetch governorates
-    const fetchGovernorates = async () => {
+    const fetchGovernorates = useCallback(async () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.get(`${process.env.API_URL}/governorates`, {
@@ -44,7 +38,7 @@ export default function EditDeliveryZone({ params: { locale, id } }) {
         } catch (error) {
             toast.error(t('fetchGovernoratesError'));
         }
-    };
+    }, [t]);
 
     // Fetch regions when governorate is selected
     const fetchRegions = async (governorateId) => {
@@ -80,7 +74,7 @@ export default function EditDeliveryZone({ params: { locale, id } }) {
     };
 
     // Fetch zone details
-    const fetchZoneDetails = async () => {
+    const fetchZoneDetails = useCallback( async () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.get(`${process.env.API_URL}/zone/details`, {
@@ -104,7 +98,7 @@ export default function EditDeliveryZone({ params: { locale, id } }) {
             toast.error(t('fetchZoneError'));
             router.push(`/${locale}/delivery`);
         }
-    };
+    }, [id, locale, router, t]);
 
     async function updateZone(event) {
         event.preventDefault();
@@ -142,6 +136,12 @@ export default function EditDeliveryZone({ params: { locale, id } }) {
             setLoading(false);
         }
     }
+
+    // Fetch governorates and zone details on component mount
+    useEffect(() => {
+        fetchGovernorates();
+        fetchZoneDetails();
+    }, [fetchGovernorates, fetchZoneDetails, id]);
 
     if (initialLoading) {
         return (

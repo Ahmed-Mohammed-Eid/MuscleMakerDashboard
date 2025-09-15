@@ -1,6 +1,6 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import CustomFileUpload from '../../components/customFileUpload';
+import { useCallback, useEffect, useState } from 'react';
+import CustomFileUpload from '../../../../../components/customFileUpload';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import { InputNumber } from 'primereact/inputnumber';
@@ -11,9 +11,11 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { useTranslations } from 'next-intl';
+import { Slider } from 'primereact/slider';
 
 // IMPORTS
-import ChoosePrices from '../../components/ChoosePrices';
+import ChoosePrices from '../../../../../components/ChoosePrices';
+import { Tag } from 'primereact/tag';
 
 export default function CreatePackage({ params: { locale } }) {
     const t = useTranslations('createPackage');
@@ -44,7 +46,10 @@ export default function CreatePackage({ params: { locale } }) {
         dinner: false,
         allowedBreakfast: null,
         allowedLunch: null,
-        allowedDinner: null
+        allowedDinner: null,
+        carb: '',
+        protein: '',
+        caloriesRange: [0, 5000]
     });
 
     // HANDLERS
@@ -93,6 +98,11 @@ export default function CreatePackage({ params: { locale } }) {
         formData.append('allowedLunch', form.allowedLunch ? form.allowedLunch : 0);
         formData.append('allowedDinner', form.allowedDinner ? form.allowedDinner : 0);
 
+        // CARB & PROTEIN
+        formData.append('carb', form.carb || 0);
+        formData.append('protein', form.protein || 0);
+        formData.append('caloriesRange', JSON.stringify(form.caloriesRange || [0, 0]));
+
         // SEND THE REQUEST
         axios
             .post(`${process.env.API_URL}/create/bundle`, formData, {
@@ -110,14 +120,8 @@ export default function CreatePackage({ params: { locale } }) {
             });
     }
 
-    // EFFECT TO FETCH DATA
-    useEffect(() => {
-        // GET CATEGORIES LIST
-        getCategoriesList();
-    }, []);
-
     // GET CATEGORIES LIST HANDLER
-    const getCategoriesList = () => {
+    const getCategoriesList = useCallback(() => {
         // GET THE TOKEN FROM LOCAL STORAGE
         const token = localStorage.getItem('token');
 
@@ -135,7 +139,13 @@ export default function CreatePackage({ params: { locale } }) {
                 console.log(err);
                 toast.error(t('failedToFetchCategories'));
             });
-    };
+    }, [t]);
+
+    // EFFECT TO FETCH DATA
+    useEffect(() => {
+        // GET CATEGORIES LIST
+        getCategoriesList();
+    }, [getCategoriesList]);
 
     return (
         <form onSubmit={createPackage} dir={isRTL ? 'rtl' : 'ltr'}>
@@ -434,6 +444,27 @@ export default function CreatePackage({ params: { locale } }) {
                             value={form.allowedDinner}
                             onChange={(e) => setForm({ ...form, allowedDinner: e.value })}
                         />
+                    </div>
+
+                    {/*  CARB & PROTEIN */}
+                    <div className="field col-6">
+                        <label htmlFor="carb">{t('carb')}</label>
+                        <InputNumber id="carb" placeholder={t('enterCarb')} mode="decimal" minFractionDigits={0} maxFractionDigits={0} min={0} value={form.carb} onChange={(e) => setForm({ ...form, carb: e.value })} />
+                    </div>
+                    <div className="field col-6">
+                        <label htmlFor="protein">{t('protein')}</label>
+                        <InputNumber id="protein" placeholder={t('enterProtein')} mode="decimal" minFractionDigits={0} maxFractionDigits={0} min={0} value={form.protein} onChange={(e) => setForm({ ...form, protein: e.value })} />
+                    </div>
+
+                    {/* SLIDER */}
+                    <div className="field col-12">
+                        <label htmlFor="caloriesRange" className="mb-3 block">
+                            {t('caloriesRange')}
+                        </label>
+                        <Slider id="caloriesRange" value={form.caloriesRange} range onChange={(e) => setForm({ ...form, caloriesRange: e.value })} min={0} max={5000} step={20} />
+                        <div className="mt-2 flex justify-content-between align-content-center">
+                            <Tag severity={'success'}> {form.caloriesRange[0]}</Tag> <Tag severity={'success'}> {form.caloriesRange[1]}</Tag>
+                        </div>
                     </div>
                 </div>
             </div>

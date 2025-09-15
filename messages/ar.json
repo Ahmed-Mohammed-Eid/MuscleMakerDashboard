@@ -193,7 +193,12 @@
         "allowedLunch": "رقم الغداء المسموح به",
         "enterAllowedLunch": "أدخل عدد الغداء المسموح به",
         "allowedDinner": "رقم العشاء المسموح به",
-        "enterAllowedDinner": "أدخل عدد العشاء المسموح به"
+        "enterAllowedDinner": "أدخل عدد العشاء المسموح به",
+        "carb": "الكربوهيدرات (بالجرام)",
+        "enterCarb": "أدخل الكربوهيدرات (بالجرام)",
+        "protein": "البروتين (بالجرام)",
+        "enterProtein": "أدخل البروتين (بالجرام)",
+        "caloriesRange": "نطاق السعرات الحرارية"
     },
     "createPackage": {
         "maleImage": "صورة الذكر",
@@ -243,7 +248,12 @@
         "allowedLunch": "رقم الغداء المسموح به",
         "enterAllowedLunch": "أدخل عدد الغداء المسموح به",
         "allowedDinner": "رقم العشاء المسموح به",
-        "enterAllowedDinner": "أدخل عدد العشاء المسموح به"
+        "enterAllowedDinner": "أدخل عدد العشاء المسموح به",
+        "carb": "الكربوهيدرات (بالجرام)",
+        "enterCarb": "أدخل الكربوهيدرات (بالجرام)",
+        "protein": "البروتين (بالجرام)",
+        "enterProtein": "أدخل البروتين (بالجرام)",
+        "caloriesRange": "نطاق السعرات الحرارية"
     },
     "meals": {
         "orders": "الطلبات",
@@ -725,6 +735,7 @@
             "expired": "البحث بانتهاء الصلاحية"
         },
         "actions": {
+            "header": "الإجراءات",
             "changeStatus": "تغيير الحالة",
             "delete": "حذف"
         },

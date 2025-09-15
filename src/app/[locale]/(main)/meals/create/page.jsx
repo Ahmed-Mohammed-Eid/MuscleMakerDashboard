@@ -1,9 +1,9 @@
 'use client';
 import React, { useState } from 'react';
-import CustomFileUpload from '../../components/customFileUpload';
-import ChooseExtra from '../../components/ChooseExtra';
-import ChooseTypes from '../../components/ChooseTypes';
-import MealVariations from '../../components/MealVariations';
+import CustomFileUpload from '../../../../../components/customFileUpload';
+import ChooseExtra from '../../../../../components/ChooseExtra';
+import ChooseTypes from '../../../../../components/ChooseTypes';
+import MealVariations from '../../../../../components/MealVariations';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import { InputNumber } from 'primereact/inputnumber';
@@ -85,11 +85,6 @@ export default function CreateMeal({ params: { locale } }) {
         formData.append('mealTitleEn', form.mealTitleEn);
         formData.append('mealTypes', JSON.stringify(form.mealType));
         formData.append('menuType', form.mealCategory);
-        // formData.append("protine", form.protein);
-        // formData.append("carbohydrates", form.carbohydrate);
-        // formData.append("fats", form.fat);
-        // formData.append("calories", form.calories);
-        // formData.append("sugar", form.sugar);
         formData.append('mealDescription', form.mealDescription);
         formData.append('mealBlocked', form.blockMeal);
         formData.append('mealPrice', form.mealCategory === 'orders' ? form.mealPrice : 0);

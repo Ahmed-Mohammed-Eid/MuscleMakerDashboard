@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import CustomFileUpload from '../../components/customFileUpload';
+import CustomFileUpload from '../../../../../components/customFileUpload';
 import { Button } from 'primereact/button';
 import { useTranslations } from 'next-intl';
 import { toast } from 'react-hot-toast';
