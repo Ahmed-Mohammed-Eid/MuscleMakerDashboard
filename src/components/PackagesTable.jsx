@@ -114,8 +114,6 @@ export default function PackagesTable({ locale }) {
                                 alt={rowData.bundleName}
                                 width={50}
                                 height={50}
-                                placeholder={'blur'}
-                                blurDataURL={rowData.bundleImageMale}
                                 style={{
                                     borderRadius: '50%',
                                     objectFit: 'cover'
@@ -134,8 +132,6 @@ export default function PackagesTable({ locale }) {
                                 alt={rowData.bundleName}
                                 width={50}
                                 height={50}
-                                placeholder={'blur'}
-                                blurDataURL={rowData.bundleImageFemale}
                                 style={{
                                     borderRadius: '50%',
                                     objectFit: 'cover'

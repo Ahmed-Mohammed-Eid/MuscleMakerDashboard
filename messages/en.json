@@ -818,7 +818,9 @@
         "invalidUsername": "Invalid username",
         "invalidPassword": "Invalid password",
         "notAuthorized": "You are not authorized",
-        "loginFailed": "Login failed"
+        "loginFailed": "Login failed",
+        "arabic": "Arabic",
+        "english": "English"
     },
     "flexBundle": {
         "title": "Flexible Bundle Configuration",

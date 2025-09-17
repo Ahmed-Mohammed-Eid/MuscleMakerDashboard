@@ -4,9 +4,12 @@ import React, { useState } from 'react';
 import { formatDate } from '../../../utils/helpers';
 import { InputText } from 'primereact/inputtext';
 import styles from './SubscriptionDays.module.scss';
+import toast from 'react-hot-toast';
+import axios from 'axios';
 
-function SubscriptionDays({ isRTL, planDays, setSelectedDayToEdit }) {
+function SubscriptionDays({ isRTL, planDays, setSelectedDayToEdit, clientId, fetchClientData }) {
     const [globalFilter, setGlobalFilter] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleEditDay = (dayId) => {
         setSelectedDayToEdit(dayId);
@@ -43,6 +46,79 @@ function SubscriptionDays({ isRTL, planDays, setSelectedDayToEdit }) {
 
     const filteredDays = planDays ? filterDays(planDays) : [];
 
+    const freezeHandle = async (dayId) => {
+        if (!clientId || !dayId) return toast.error(isRTL ? 'معرف العميل أو اليوم غير صالح.' : 'Invalid client or day ID.');
+        setLoading(true);
+        try {
+            const response = await axios.post(
+                `${process.env.API_URL}/freez/subscription`,
+                {
+                    dateIds: [dayId],
+                    clientId
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
+            );
+            if (response.data.success) {
+                toast.success(isRTL ? 'تم تجميد اليوم بنجاح.' : 'Day frozen successfully.');
+            }
+
+            // Refresh the plan days after freezing/unfreezing
+            if (fetchClientData) {
+                await fetchClientData();
+            }
+        } catch (error) {
+            console.error('Error freezing day:', error);
+            toast.error(error.response?.data?.message || (isRTL ? 'حدث خطأ أثناء تجميد اليوم.' : 'Error freezing the day.'));
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const unfreezeHandle = async (dayId) => {
+        if (!clientId || !dayId) return toast.error(isRTL ? 'معرف العميل أو اليوم غير صالح.' : 'Invalid client or day ID.');
+        setLoading(true);
+        try {
+            const response = await axios.post(
+                `${process.env.API_URL}/unfreez/subscription`,
+                {
+                    dateIds: [dayId],
+                    clientId
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
+            );
+            if (response.data.success) {
+                toast.success(isRTL ? 'تم إلغاء تجميد اليوم بنجاح.' : 'Day unfreezed successfully.');
+            }
+
+            // Refresh the plan days after freezing/unfreezing
+            if (fetchClientData) {
+                await fetchClientData();
+            }
+        } catch (error) {
+            console.error('Error unfreezing day:', error);
+            toast.error(error.response?.data?.message || (isRTL ? 'حدث خطأ أثناء إلغاء تجميد اليوم.' : 'Error unfreezing the day.'));
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const freeze_unfreeze_day = (dayId, isSuspended) => {
+        if (!dayId) return toast.error(isRTL ? 'معرف اليوم غير صالح.' : 'Invalid day ID.');
+        if (isSuspended) {
+            unfreezeHandle(dayId);
+        } else {
+            freezeHandle(dayId);
+        }
+    };
+
     return (
         <div className={styles.subscriptionDays}>
             <div className={styles.card}>
@@ -56,10 +132,12 @@ function SubscriptionDays({ isRTL, planDays, setSelectedDayToEdit }) {
                                 {filteredDays.map((day, index) => {
                                     // Using submitted property to determine if day is selected
                                     const isSubmitted = day?.submitted === true;
+                                    const isSuspended = day?.suspended === true;
+                                    const isDelivered = day?.delivered === true;
 
                                     const statusText = isSubmitted ? (isRTL ? 'محدد' : 'Submitted') : isRTL ? 'غير محدد' : 'Not Submitted';
-                                    const deliveredText = isSubmitted ? (isRTL ? 'تم التسليم' : 'Delivered') : isRTL ? 'لم يتم التسليم' : 'Not Delivered';
-                                    const suspendedText = isSubmitted ? (isRTL ? 'معلق' : 'Suspended') : isRTL ? 'غير معلق' : 'Not Suspended';
+                                    const deliveredText = isDelivered ? (isRTL ? 'تم التسليم' : 'Delivered') : isRTL ? 'لم يتم التسليم' : 'Not Delivered';
+                                    const suspendedText = isSuspended ? (isRTL ? 'معلق' : 'Suspended') : isRTL ? 'غير معلق' : 'Not Suspended';
 
                                     return (
                                         <li key={index} className={styles.gridItem}>
@@ -90,9 +168,9 @@ function SubscriptionDays({ isRTL, planDays, setSelectedDayToEdit }) {
                                                         {isRTL ? 'تعديل' : 'Edit'}
                                                     </button>
                                                     {/* FREEZE || UNFREEZE */}
-                                                    <button className={styles.freezeButton}>
+                                                    <button className={[styles.freezeButton, isSuspended ? styles.unfreeze : ''].join(' ')} onClick={() => freeze_unfreeze_day(day._id, isSuspended)}>
                                                         <i className="pi pi-ban"></i>
-                                                        {isRTL ? 'تجميد' : 'Freeze'}
+                                                        {isRTL ? (isSuspended ? 'إلغاء التجميد' : 'تجميد') : isSuspended ? 'Unfreeze' : 'Freeze'}
                                                     </button>
                                                 </div>
                                             </div>

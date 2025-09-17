@@ -807,7 +807,9 @@
         "invalidUsername": "اسم المستخدم غير صالح",
         "invalidPassword": "كلمة المرور غير صالحة",
         "notAuthorized": "أنت غير مصرح",
-        "loginFailed": "فشل تسجيل الدخول"
+        "loginFailed": "فشل تسجيل الدخول",
+        "arabic": "العربية",
+        "english": "الإنجليزية"
     },
     "flexBundle": {
         "title": "تكوين الباقة المرنة",

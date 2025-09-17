@@ -59,6 +59,7 @@ export default function EditPackage({ bundle, id, locale }) {
     const memoizedBundle = useMemo(() => bundle, [bundle]);
 
     useEffect(() => {
+        console.log('Memoized Bundle:', memoizedBundle);
         if (memoizedBundle) {
             setForm({
                 categoryId: memoizedBundle.categoryId,
@@ -80,7 +81,7 @@ export default function EditPackage({ bundle, id, locale }) {
                 allowedLunch: memoizedBundle.allowedLunch,
                 allowedDinner: memoizedBundle.allowedDinner,
                 carb: memoizedBundle.carb || '',
-                protein: memoizedBundle.protein || '',
+                protein: memoizedBundle.protine || '',
                 caloriesRange: memoizedBundle?.caloriesRange && memoizedBundle?.caloriesRange.length > 0 ? memoizedBundle.caloriesRange : [0, 5000]
             });
 
