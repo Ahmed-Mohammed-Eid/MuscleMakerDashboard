@@ -99,7 +99,10 @@
         "uploadRegionsByExcel": "رفع المناطق عبر إكسل",
         "notifications": "الإشعارات",
         "notificationsList": "قائمة الإشعارات",
-        "createNotification": "إنشاء إشعار"
+        "createNotification": "إنشاء إشعار",
+        "dislikedMeals": "الوجبات غير المفضلة",
+        "dislikedMealsList": "قائمة الوجبات غير المفضلة",
+        "createDislikedMeal": "إنشاء وجبة غير مفضلة"
     },
     "DashboardHome": {
         "all": "الكل",
@@ -918,7 +921,8 @@
                 "floor": "الطابق",
                 "apartment": "الشقة",
                 "protein": "البروتين (جرام)",
-                "carbs": "الكربوهيدرات (جرام)"
+                "carbs": "الكربوهيدرات (جرام)",
+                "dislikedMeals": "الوجبات غير المفضلة"
             },
             "unsubscribe": {
                 "header": "إلغاء الاشتراك",
@@ -936,6 +940,7 @@
             }
         },
         "actions": {
+            "editDayMeals": "تعديل وجبات اليوم",
             "delete": "حذف المستخدم",
             "activate": "تفعيل الاشتراك",
             "freeze": "تجميد الاشتراك",

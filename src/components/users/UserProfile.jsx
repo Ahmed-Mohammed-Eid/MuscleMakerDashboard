@@ -16,6 +16,8 @@ import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Checkbox } from 'primereact/checkbox';
 import { RadioButton } from 'primereact/radiobutton';
+import { MultiSelect } from 'primereact/multiselect';
+import { title } from 'process';
 
 export default function UserProfile({ id, locale }) {
     // ROUTER
@@ -25,6 +27,8 @@ export default function UserProfile({ id, locale }) {
 
     // STATE
     const [userData, setUserData] = useState(null);
+    const [dislikedMeals, setDislikedMeals] = useState([]);
+
     const [loading, setLoading] = useState(true);
     const [showRenewDialog, setShowRenewDialog] = useState(false);
     const [showFreezeDialog, setShowFreezeDialog] = useState(false);
@@ -46,7 +50,8 @@ export default function UserProfile({ id, locale }) {
         floor: '',
         appartment: '',
         carb: '',
-        protine: ''
+        protine: '',
+        dislikedMeals: []
     });
     const [showModifyDaysDialog, setShowModifyDaysDialog] = useState(false);
     const [modifyDaysData, setModifyDaysData] = useState({
@@ -85,13 +90,48 @@ export default function UserProfile({ id, locale }) {
         }
     }, [id]);
 
+    const getDislikedMeals = useCallback(async () => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+            const response = await axios.get(`${process.env.API_URL}/show/disliked/meals`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setDislikedMeals(response.data?.dislikedMeals || []);
+        } catch (error) {
+            console.error('Error fetching disliked meals:', error);
+            toast.error('Failed to fetch disliked meals. Please try again.' + (error.response?.data?.message || ''));
+        }
+    }, []);
+
     useEffect(() => {
         getUserData();
     }, [getUserData]);
 
     useEffect(() => {
+        getDislikedMeals();
+    }, [getDislikedMeals]);
+
+    useEffect(() => {
         if (userData?.clientData) {
             const { clientData } = userData;
+
+            // MERGE THE DISLIKED MEALS WITH ALL MEALS TO GET THE SELECTED ONES
+            let selectedDislikedMeals = [];
+            if (clientData.dislikedMeals && dislikedMeals.length > 0 && clientData.dislikedMealsIds) {
+                const splittedMeals = clientData.dislikedMeals.split(',').map((meal) => meal.trim());
+                clientData.dislikedMealsIds.forEach((mealId, index) => {
+                    const mealObject = {
+                        id: mealId,
+                        title: splittedMeals[index]
+                    };
+
+                    selectedDislikedMeals.push(mealObject);
+                });
+            }
+
             setEditFormData({
                 clientName: clientData.clientName,
                 phoneNumber: clientData.phoneNumber,
@@ -105,7 +145,8 @@ export default function UserProfile({ id, locale }) {
                 floor: clientData.floor,
                 appartment: clientData.appartment,
                 carb: clientData.carb,
-                protine: clientData.protine
+                protine: clientData.protine,
+                dislikedMeals: selectedDislikedMeals
             });
         }
     }, [userData]);
@@ -375,13 +416,17 @@ export default function UserProfile({ id, locale }) {
     const handleEditSubmit = async () => {
         const token = localStorage.getItem('token');
 
+        const dataToSend = {
+            ...editFormData,
+            clientId: id,
+            dislikedMeals: editFormData.dislikedMeals.map((meal) => meal.title).join(', '),
+            dislikedMealsIds: editFormData.dislikedMeals.map((meal) => meal.id)
+        }
+
         try {
             const response = await axios.put(
                 `${process.env.API_URL}/edit/client/profile`,
-                {
-                    ...editFormData,
-                    clientId: id
-                },
+                dataToSend,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -823,6 +868,25 @@ export default function UserProfile({ id, locale }) {
                                     {t('dialogs.edit.carbs')}
                                 </label>
                                 <InputNumber id="carb" value={editFormData.carb} onValueChange={(e) => setEditFormData({ ...editFormData, carb: e.value })} className="w-full" min={0} />
+                            </div>
+                        </div>
+                    </div>
+                    {/* DISLIKED MEALS */}
+                    <div className="grid formgrid p-fluid">
+                        <div className="col-12">
+                            <div className="field">
+                                <label htmlFor="dislikedMeals" className="font-medium mb-2 block">
+                                    {t('dialogs.edit.dislikedMeals')}
+                                </label>
+                                <MultiSelect
+                                    id="dislikedMeals"
+                                    value={editFormData.dislikedMeals}
+                                    options={dislikedMeals.map((meal) => ({ label: isRTL ? meal.mealTitleAr : meal.mealTitleEn, value: { id: meal._id, title: `${meal.mealTitleAr} - ${meal.mealTitleEn}` } }))}
+                                    onChange={(e) => setEditFormData({ ...editFormData, dislikedMeals: e.value })}
+                                    className="w-full"
+                                    filter
+                                    display="chip"
+                                />
                             </div>
                         </div>
                     </div>

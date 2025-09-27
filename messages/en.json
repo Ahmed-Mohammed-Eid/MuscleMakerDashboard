@@ -99,7 +99,10 @@
         "uploadRegionsByExcel": "Upload Regions By Excel",
         "notifications": "Notifications",
         "notificationsList": "Notifications List",
-        "createNotification": "Create Notification"
+        "createNotification": "Create Notification",
+        "dislikedMeals": "Disliked Meals",
+        "dislikedMealsList": "Disliked Meals List",
+        "createDislikedMeal": "Create Disliked Meal"
     },
     "DashboardHome": {
         "all": "All",
@@ -929,7 +932,8 @@
                 "floor": "Floor",
                 "apartment": "Apartment",
                 "protein": "Protein (grams)",
-                "carbs": "Carbohydrates (grams)"
+                "carbs": "Carbohydrates (grams)",
+                "dislikedMeals": "Disliked Meals"
             },
             "unsubscribe": {
                 "header": "Unsubscribe Client",
@@ -947,6 +951,7 @@
             }
         },
         "actions": {
+            "editDayMeals": "Edit Day Meals",
             "delete": "Delete User",
             "activate": "Activate Subscription",
             "freeze": "Freeze Subscription",

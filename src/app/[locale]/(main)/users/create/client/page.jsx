@@ -1,8 +1,9 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { InputMask } from 'primereact/inputmask';
 import { Dropdown } from 'primereact/dropdown';
+import { MultiSelect } from 'primereact/multiselect';
 import { Password } from 'primereact/password';
 import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
@@ -13,7 +14,6 @@ import { Divider } from 'primereact/divider';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { useTranslations } from 'next-intl';
-import { MultiSelect } from 'primereact/multiselect';
 
 export default function CreateClient({ params: { locale } }) {
     const t = useTranslations('createClient');
@@ -26,6 +26,7 @@ export default function CreateClient({ params: { locale } }) {
     const [bundles, setBundles] = useState([]);
     const [flexBundleOptions, setFlexBundleOptions] = useState(null);
     const [governoratesList, setGovernoratesList] = useState([]);
+    const [dislikedMeals, setDislikedMeals] = useState([]);
 
     const [regionsList, setRegionsList] = useState([]);
     const [form, setForm] = useState({
@@ -135,7 +136,8 @@ export default function CreateClient({ params: { locale } }) {
             building: form.building,
             floor: form.floor,
             appartment: form.appartment,
-            dislikedMeals: options.hasDislikedMeals ? form.dislikedMeals : '',
+            dislikedMeals: options.hasDislikedMeals ? form.dislikedMeals.map((meal) => meal.title).join(', ') : '',
+            dislikedMealsIds: options.hasDislikedMeals ? form.dislikedMeals.map((meal) => meal.id) : [],
             password: form.password,
             startingAt: form.startingAt ? form.startingAt.toLocaleDateString('en-US') : null,
             customBundle: options.bundleType === 'custom',
@@ -212,6 +214,22 @@ export default function CreateClient({ params: { locale } }) {
         }
     };
 
+    const getDislikedMeals = useCallback(async () => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+            const response = await axios.get(`${process.env.API_URL}/show/disliked/meals`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setDislikedMeals(response.data?.dislikedMeals || []);
+        } catch (error) {
+            console.error('Error fetching disliked meals:', error);
+            toast.error('Failed to fetch disliked meals. Please try again.' + (error.response?.data?.message || ''));
+        }
+    }, []);
+
     const governorateOptions = governoratesList.map((gov) => ({
         label: gov.governorate,
         value: gov.governorate,
@@ -226,6 +244,10 @@ export default function CreateClient({ params: { locale } }) {
     useEffect(() => {
         fetchGovernorates();
     }, []);
+
+    useEffect(() => {
+        getDislikedMeals();
+    }, [getDislikedMeals]);
 
     // Render top options bar
     const renderOptionsBar = () => (
@@ -318,13 +340,21 @@ export default function CreateClient({ params: { locale } }) {
                                 </label>
                                 <Password id="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder={t('passwordPlaceholder')} feedback={false} className="w-full" />
                             </div>
-
                             {options.hasDislikedMeals && (
                                 <div className="field col-12 mb-4">
                                     <label htmlFor="dislikedMeals" className="block font-medium mb-2">
                                         {t('dislikedMealsLabel')}
                                     </label>
-                                    <InputText id="dislikedMeals" value={form.dislikedMeals} onChange={(e) => setForm({ ...form, dislikedMeals: e.target.value })} placeholder={t('dislikedMealsPlaceholder')} className="w-full" />
+                                    <MultiSelect
+                                        id="dislikedMeals"
+                                        value={form.dislikedMeals}
+                                        options={dislikedMeals.map((meal) => ({ label: isRTL ? meal.mealTitleAr : meal.mealTitleEn, value: { id: meal._id, title: `${meal.mealTitleAr} - ${meal.mealTitleEn}` } }))}
+                                        onChange={(e) => setForm({ ...form, dislikedMeals: e.value })}
+                                        placeholder={t('dislikedMealsPlaceholder')}
+                                        className="w-full"
+                                        filter
+                                        display='chip'
+                                    />
                                 </div>
                             )}
                         </div>

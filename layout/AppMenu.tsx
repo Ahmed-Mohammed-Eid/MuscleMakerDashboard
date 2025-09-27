@@ -192,28 +192,6 @@ const AppMenu = () => {
                 }
             ]
         },
-        // Delivery
-        // {
-        //     label: t('AppMenu.delivery'),
-        //     icon: 'pi pi-fw pi-list',
-        //     items: [
-        //         {
-        //             label: t('AppMenu.deliveryList'),
-        //             icon: 'pi pi-fw pi-list',
-        //             to: `/${locale}/delivery`
-        //         },
-        //         {
-        //             label: t('AppMenu.deliveryPeriods'),
-        //             icon: 'pi pi-fw pi-list',
-        //             to: `/${locale}/delivery/periods`
-        //         },
-        //         {
-        //             label: t('AppMenu.createDelivery'),
-        //             icon: 'pi pi-fw pi-plus',
-        //             to: `/${locale}/delivery/create`
-        //         }
-        //     ]
-        // },
         {
             label: t('AppMenu.notifications'),
             icon: 'pi pi-fw pi-bell',
@@ -227,6 +205,22 @@ const AppMenu = () => {
                     label: t('AppMenu.createNotification'),
                     icon: 'pi pi-fw pi-plus',
                     to: `/${locale}/notifications/create`
+                }
+            ]
+        },
+        {
+            label: t('AppMenu.dislikedMeals'),
+            icon: 'pi pi-fw pi-thumbs-down',
+            items: [
+                {
+                    label: t('AppMenu.dislikedMealsList'),
+                    icon: 'pi pi-fw pi-list',
+                    to: `/${locale}/disliked-meals`
+                },
+                {
+                    label: t('AppMenu.createDislikedMeal'),
+                    icon: 'pi pi-fw pi-plus',
+                    to: `/${locale}/disliked-meals/create`
                 }
             ]
         },
